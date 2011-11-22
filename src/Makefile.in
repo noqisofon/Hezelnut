@@ -14,6 +14,7 @@
 # PARTICULAR PURPOSE.
 
 @SET_MAKE@
+
 VPATH = @srcdir@
 pkgdatadir = $(datadir)/@PACKAGE@
 pkgincludedir = $(includedir)/@PACKAGE@
@@ -41,8 +42,26 @@ mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/include/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
-SOURCES =
-DIST_SOURCES =
+LIBRARIES = $(noinst_LIBRARIES)
+AR = ar
+ARFLAGS = cru
+libHezelnut_a_AR = $(AR) $(ARFLAGS)
+libHezelnut_a_LIBADD =
+am_libHezelnut_a_OBJECTS = HNConstantString.$(OBJEXT)
+libHezelnut_a_OBJECTS = $(am_libHezelnut_a_OBJECTS)
+DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)/include
+depcomp = $(SHELL) $(top_srcdir)/depcomp
+am__depfiles_maybe = depfiles
+am__mv = mv -f
+OBJCCOMPILE = $(OBJC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
+	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_OBJCFLAGS) $(OBJCFLAGS)
+OBJCLD = $(OBJC)
+OBJCLINK = $(OBJCLD) $(AM_OBJCFLAGS) $(OBJCFLAGS) $(AM_LDFLAGS) \
+	$(LDFLAGS) -o $@
+SOURCES = $(libHezelnut_a_SOURCES)
+DIST_SOURCES = $(libHezelnut_a_SOURCES)
+ETAGS = etags
+CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
 AMTAR = @AMTAR@
@@ -75,6 +94,9 @@ LIBS = @LIBS@
 LTLIBOBJS = @LTLIBOBJS@
 MAKEINFO = @MAKEINFO@
 MKDIR_P = @MKDIR_P@
+OBJC = @OBJC@
+OBJCDEPMODE = @OBJCDEPMODE@
+OBJCFLAGS = @OBJCFLAGS@
 OBJEXT = @OBJEXT@
 PACKAGE = @PACKAGE@
 PACKAGE_BUGREPORT = @PACKAGE_BUGREPORT@
@@ -94,6 +116,7 @@ abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
 abs_top_srcdir = @abs_top_srcdir@
 ac_ct_CC = @ac_ct_CC@
+ac_ct_OBJC = @ac_ct_OBJC@
 am__include = @am__include@
 am__leading_dot = @am__leading_dot@
 am__quote = @am__quote@
@@ -131,9 +154,14 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
+noinst_LIBRARIES = libHezelnut.a
+libHezelnut_a_SOURCES = \
+	HNConstantString.m
+
 all: all-am
 
 .SUFFIXES:
+.SUFFIXES: .m .o .obj
 $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	@for dep in $?; do \
 	  case '$(am__configure_deps)' in \
@@ -164,12 +192,87 @@ $(top_srcdir)/configure:  $(am__configure_deps)
 $(ACLOCAL_M4):  $(am__aclocal_m4_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
 $(am__aclocal_m4_deps):
+
+clean-noinstLIBRARIES:
+	-test -z "$(noinst_LIBRARIES)" || rm -f $(noinst_LIBRARIES)
+libHezelnut.a: $(libHezelnut_a_OBJECTS) $(libHezelnut_a_DEPENDENCIES) 
+	-rm -f libHezelnut.a
+	$(libHezelnut_a_AR) libHezelnut.a $(libHezelnut_a_OBJECTS) $(libHezelnut_a_LIBADD)
+	$(RANLIB) libHezelnut.a
+
+mostlyclean-compile:
+	-rm -f *.$(OBJEXT)
+
+distclean-compile:
+	-rm -f *.tab.c
+
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/HNConstantString.Po@am__quote@
+
+.m.o:
+@am__fastdepOBJC_TRUE@	$(OBJCCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
+@am__fastdepOBJC_TRUE@	$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@AMDEP_TRUE@@am__fastdepOBJC_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepOBJC_FALSE@	DEPDIR=$(DEPDIR) $(OBJCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepOBJC_FALSE@	$(OBJCCOMPILE) -c -o $@ $<
+
+.m.obj:
+@am__fastdepOBJC_TRUE@	$(OBJCCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ `$(CYGPATH_W) '$<'`
+@am__fastdepOBJC_TRUE@	$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@AMDEP_TRUE@@am__fastdepOBJC_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepOBJC_FALSE@	DEPDIR=$(DEPDIR) $(OBJCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepOBJC_FALSE@	$(OBJCCOMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
+
+ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
+	list='$(SOURCES) $(HEADERS) $(LISP) $(TAGS_FILES)'; \
+	unique=`for i in $$list; do \
+	    if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
+	  done | \
+	  $(AWK) '{ files[$$0] = 1; nonempty = 1; } \
+	      END { if (nonempty) { for (i in files) print i; }; }'`; \
+	mkid -fID $$unique
 tags: TAGS
-TAGS:
 
+TAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
+		$(TAGS_FILES) $(LISP)
+	set x; \
+	here=`pwd`; \
+	list='$(SOURCES) $(HEADERS)  $(LISP) $(TAGS_FILES)'; \
+	unique=`for i in $$list; do \
+	    if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
+	  done | \
+	  $(AWK) '{ files[$$0] = 1; nonempty = 1; } \
+	      END { if (nonempty) { for (i in files) print i; }; }'`; \
+	shift; \
+	if test -z "$(ETAGS_ARGS)$$*$$unique"; then :; else \
+	  test -n "$$unique" || unique=$$empty_fix; \
+	  if test $$# -gt 0; then \
+	    $(ETAGS) $(ETAGSFLAGS) $(AM_ETAGSFLAGS) $(ETAGS_ARGS) \
+	      "$$@" $$unique; \
+	  else \
+	    $(ETAGS) $(ETAGSFLAGS) $(AM_ETAGSFLAGS) $(ETAGS_ARGS) \
+	      $$unique; \
+	  fi; \
+	fi
 ctags: CTAGS
-CTAGS:
+CTAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
+		$(TAGS_FILES) $(LISP)
+	list='$(SOURCES) $(HEADERS)  $(LISP) $(TAGS_FILES)'; \
+	unique=`for i in $$list; do \
+	    if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
+	  done | \
+	  $(AWK) '{ files[$$0] = 1; nonempty = 1; } \
+	      END { if (nonempty) { for (i in files) print i; }; }'`; \
+	test -z "$(CTAGS_ARGS)$$unique" \
+	  || $(CTAGS) $(CTAGSFLAGS) $(AM_CTAGSFLAGS) $(CTAGS_ARGS) \
+	     $$unique
 
+GTAGS:
+	here=`$(am__cd) $(top_builddir) && pwd` \
+	  && $(am__cd) $(top_srcdir) \
+	  && gtags -i $(GTAGS_ARGS) "$$here"
+
+distclean-tags:
+	-rm -f TAGS ID GTAGS GRTAGS GSYMS GPATH tags
 
 distdir: $(DISTFILES)
 	@srcdirstrip=`echo "$(srcdir)" | sed 's/[].[^$$\\*]/\\\\&/g'`; \
@@ -203,7 +306,7 @@ distdir: $(DISTFILES)
 	done
 check-am: all-am
 check: check-am
-all-am: Makefile
+all-am: Makefile $(LIBRARIES)
 installdirs:
 install: install-am
 install-exec: install-exec-am
@@ -232,11 +335,13 @@ maintainer-clean-generic:
 	@echo "it deletes files that may require special tools to rebuild."
 clean: clean-am
 
-clean-am: clean-generic mostlyclean-am
+clean-am: clean-generic clean-noinstLIBRARIES mostlyclean-am
 
 distclean: distclean-am
+	-rm -rf ./$(DEPDIR)
 	-rm -f Makefile
-distclean-am: clean-am distclean-generic
+distclean-am: clean-am distclean-compile distclean-generic \
+	distclean-tags
 
 dvi: dvi-am
 
@@ -279,12 +384,13 @@ install-ps-am:
 installcheck-am:
 
 maintainer-clean: maintainer-clean-am
+	-rm -rf ./$(DEPDIR)
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 
 mostlyclean: mostlyclean-am
 
-mostlyclean-am: mostlyclean-generic
+mostlyclean-am: mostlyclean-compile mostlyclean-generic
 
 pdf: pdf-am
 
@@ -298,15 +404,18 @@ uninstall-am:
 
 .MAKE: install-am install-strip
 
-.PHONY: all all-am check check-am clean clean-generic distclean \
-	distclean-generic distdir dvi dvi-am html html-am info info-am \
-	install install-am install-data install-data-am install-dvi \
-	install-dvi-am install-exec install-exec-am install-html \
-	install-html-am install-info install-info-am install-man \
-	install-pdf install-pdf-am install-ps install-ps-am \
-	install-strip installcheck installcheck-am installdirs \
-	maintainer-clean maintainer-clean-generic mostlyclean \
-	mostlyclean-generic pdf pdf-am ps ps-am uninstall uninstall-am
+.PHONY: CTAGS GTAGS all all-am check check-am clean clean-generic \
+	clean-noinstLIBRARIES ctags distclean distclean-compile \
+	distclean-generic distclean-tags distdir dvi dvi-am html \
+	html-am info info-am install install-am install-data \
+	install-data-am install-dvi install-dvi-am install-exec \
+	install-exec-am install-html install-html-am install-info \
+	install-info-am install-man install-pdf install-pdf-am \
+	install-ps install-ps-am install-strip installcheck \
+	installcheck-am installdirs maintainer-clean \
+	maintainer-clean-generic mostlyclean mostlyclean-compile \
+	mostlyclean-generic pdf pdf-am ps ps-am tags uninstall \
+	uninstall-am
 
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

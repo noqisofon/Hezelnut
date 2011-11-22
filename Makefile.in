@@ -35,7 +35,7 @@ subdir = .
 DIST_COMMON = README $(am__configure_deps) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in $(top_srcdir)/configure \
 	$(top_srcdir)/include/config.h.in AUTHORS COPYING ChangeLog \
-	INSTALL NEWS install-sh missing
+	INSTALL NEWS depcomp install-sh missing
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
@@ -130,6 +130,9 @@ LIBS = @LIBS@
 LTLIBOBJS = @LTLIBOBJS@
 MAKEINFO = @MAKEINFO@
 MKDIR_P = @MKDIR_P@
+OBJC = @OBJC@
+OBJCDEPMODE = @OBJCDEPMODE@
+OBJCFLAGS = @OBJCFLAGS@
 OBJEXT = @OBJEXT@
 PACKAGE = @PACKAGE@
 PACKAGE_BUGREPORT = @PACKAGE_BUGREPORT@
@@ -149,6 +152,7 @@ abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
 abs_top_srcdir = @abs_top_srcdir@
 ac_ct_CC = @ac_ct_CC@
+ac_ct_OBJC = @ac_ct_OBJC@
 am__include = @am__include@
 am__leading_dot = @am__leading_dot@
 am__quote = @am__quote@

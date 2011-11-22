@@ -1,11 +1,11 @@
 #ifndef Hezelnut_HNConstantString_h
 #define Hezelnut_HNConstantString_h
 
-#import <objc/Object.h>
-#import "HNPString.h"
+#import <hezelnut/HNObject.h>
+#import <hezelnut/HNPString.h>
 
 
-@interface HNConstantString : Object < HNPString >
+@interface HNConstantString : HNObject < HNPString >
 {
   unsigned int length_;
   char* c_string_;

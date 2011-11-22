@@ -5,8 +5,14 @@
 *.log
 *.diff
 *.pidb
+*.o
+config.status
+stamp-h1
 bin/
 commit_message.tmp
 Makefile
 ./atom4te.cache
 atom4te.cache/*
+configure
+src/.deps
+include/config.h

@@ -4,11 +4,11 @@
 AC_PREREQ([2.67])
 AC_INIT(Hezelnut, 0.0, ned.rihine@gmail.com)
 AM_INIT_AUTOMAKE
-AC_CONFIG_SRCDIR([include/hezelnut/HNConstantString.h])
+AC_CONFIG_SRCDIR([include/hezelnut/HNObject.h])
 AC_CONFIG_HEADERS([include/config.h])
 
 # Checks for programs.
-AC_PROG_CC
+AC_PROG_OBJC
 
 # Checks for libraries.
 
