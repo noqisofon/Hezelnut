@@ -1,0 +1,9 @@
+\#*#
+*~
+*.*~
+*.txt
+*.log
+*.diff
+*.pidb
+bin/
+commit_message.tmp
