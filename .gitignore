@@ -7,3 +7,6 @@
 *.pidb
 bin/
 commit_message.tmp
+Makefile
+./atom4te.cache
+atom4te.cache/*
