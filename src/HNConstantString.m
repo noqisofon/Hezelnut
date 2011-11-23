@@ -22,7 +22,7 @@ static char* _hn_make_cstring(unsigned int len) {
 }
 
 
-static void _hn_cstring_destroy(const char* cs) {
+static void _hn_cstring_destroy(char* cs) {
   free( cs );
 }
 
