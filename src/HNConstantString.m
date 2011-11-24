@@ -150,20 +150,24 @@ static void _hn_cstring_destroy(char* cs) {
 }
 
 
-/*** @addgroup primitive accessing */
-- (const char *) cString { return c_string_; }
+/*! \name primitive accessing */
+- (const char *) cString {
+  return c_string_;
+}
 
-- (unsigned int) length { return length_; }
+- (unsigned int) length {
+  return length_;
+}
 
 
-/** * @addgroup accessing */
-/**
+/*! \name accessing */
+/*!
  * index 番目の ASCII 値を返します。
  */
 - (char) byteAt: (int)index {
   return c_string_[index];
 }
-/**
+/*!
  * index 番目に ASCII 値を設定します。
  */
 - (char) byteAt: (int)index put: (char)value {
@@ -175,7 +179,7 @@ static void _hn_cstring_destroy(char* cs) {
 }
 
 
-/**
+/*!
  * 文字列のバイトサイズを返します。
  */
 - (unsigned int) byteSize {
@@ -183,7 +187,7 @@ static void _hn_cstring_destroy(char* cs) {
 }
 
 
-/**
+/*!
  * 文字列の最後の文字が数字なら真を返します。
  */
 - (BOOL) endsWithDigit {
@@ -191,7 +195,7 @@ static void _hn_cstring_destroy(char* cs) {
 }
 
 
-/**
+/*!
  * start 番目から delimiters の何れかの文字を含む最初の位置を返します。無い場合は文字数 + 1 を返します。
  */
 - (int) findAnySubstr: (id <HNPString>)delimiters startingAt: (int)start {
@@ -212,7 +216,7 @@ static void _hn_cstring_destroy(char* cs) {
 
 
 #ifdef HEZELNUT_HAS_ORDEREDCOLLECTION
-/**
+/*!
  * delimiters の文字列をデリミタとみなして、デリミタで分断した文字列を NSOrderedCollection のインスタンスとして返します。
  */
 - (NSOrderedCollection *) findBetweenSubstrs: (id <HNPString>)delimiters {
@@ -270,7 +274,7 @@ static void _hn_cstring_destroy(char* cs) {
 #endif  /* HEZELNUT_HAS_ORDEREDCOLLECTION */
 
 
-/**
+/*!
  * start_index 番目の '(' に対応する、')' の文字位置を返します。対応する ')' が見つからない場合は size + 1 を返します。
  */
 - (int) findCloseParenthesisFor: (int)start_index {
@@ -289,7 +293,7 @@ static void _hn_cstring_destroy(char* cs) {
 }
 
 
-/**
+/*!
  * start_index 番目から delimiters の文字位置を返します。
  */
 - (int) findDelimiters: (id <HNPString>)delimiters startingAt: (int)start_index {
@@ -316,19 +320,19 @@ static void _hn_cstring_destroy(char* cs) {
 }
 
 
-/**
+/*!
  * sub_string を含む位置を返します。sub_string を含まない場合は -1 を返します。
  */
 - (int) findString: (id <HNPString>)sub_string {
   return [ self findString: sub_string startingAt: 0 caseSensitive: true ];
 }
-/**
+/*!
  * findString: の開始位置を指定できるようにしたものです。
  */
 - (int) findString: (id <HNPString>)sub_string startingAt: (int)start_index {
   return [ self findString: sub_string startingAt: start_index caseSensitive: true ];
 }
-/**
+/*!
  * findString:startingAt: の大文字小文字を無視するか指定できるようにしたものです。
  */
 - (int) findString: (id <HNPString>)sub_string startingAt: (int)start_index caseSensitive: (BOOL)case_sensitive {
@@ -357,17 +361,17 @@ static void _hn_cstring_destroy(char* cs) {
 
 
 #ifdef HEZELNUT_HAS_ORDEREDCOLLECTION
-/**
+/*!
  * delimiters 文字、または文字列で分割した HNOrderedCollection オブジェクトを返します。
  */
 - (HNOrderedCollection *) findTokens: (id <HNPString>)delimiters {
 }
-/**
+/*!
  * delimiters 文字、または文字列で分割した HNOrderedCollection オブジェクトから sub_string を含む文字列を返します。
  */
 - (HNOrderedCollection *) findTokens: (id <HNPString>)delimiters includes: (id <HNPString>)sub_string {
 }
-/**
+/*!
  * delimiters 文字、または文字列で分割するとき keepers 文字は残しておきます。
  */
 - (HNOrderedCollection *) findTokens: (id <HNPString>)delimiters keep: (id <HNPString>)keepers {
@@ -375,7 +379,7 @@ static void _hn_cstring_destroy(char* cs) {
 #endif  /* ifdef defined(HEZELNUT_HAS_ORDEREDCOLLECTION) */
 
 
-/**
+/*!
  * start_index 番目から key の開始位置を求めます。key が無い場合は -1 を返します。
  */
 - (int) findWordStart: (id <HNPString>)key startingAt: (int)start_index {
@@ -403,7 +407,7 @@ static void _hn_cstring_destroy(char* cs) {
 }
 
 
-/**
+/*!
  * レシーバに含まれる文字列 sub_string を指定位置 start_index より探索して、最後に見つけた位置を返します。見つからない場合は -1 を返します。
  */
 - (int) findLastOccuranceOfString: (id <HNPString>)sub_string startingAt: (int)start_index {
@@ -432,13 +436,13 @@ static void _hn_cstring_destroy(char* cs) {
 }
 
 
-/**
+/*!
  * sub_string を含む場合は真、含まない場合は偽を返します。
  */
 - (BOOL) includesSubstring: (id <HNPString>)sub_string {
   return [ self includesSubstring: sub_string caseSensitive: YES ];
 }
-/**
+/*!
  * 
  */
 - (BOOL) includesSubstring: (id <HNPString>)sub_string caseSensitive: (BOOL)case_sensitive {
@@ -476,13 +480,13 @@ static void _hn_cstring_destroy(char* cs) {
 }
 
 
-/**
+/*!
  * a_character の存在する位置を返します。
  */
 - (int) indexOf: (char)a_character {
   return [ self indexOf: a_character startingAt: 0 ];
 }
-/**
+/*!
  * 
  */
 - (int) indexOf: (char)a_character startingAt: (int)start_index {
@@ -497,7 +501,7 @@ static void _hn_cstring_destroy(char* cs) {
   return -1;
 }
 #ifdef HEZELNUT_ENABLE_BLOCK
-/**
+/*!
  * 
  */
 - (int) indexOf: (char)a_character startingAt: (int)start_index ifAbsent: a_block {
@@ -515,16 +519,16 @@ static void _hn_cstring_destroy(char* cs) {
 
 
 #ifdef HEZELNUT_HAS_MUTABLESTRING
-/**
+/*!
  * a_characterset で与えられた文字が最初に見つかったインデックス値を返します。
  */
 - (int) indexOfAnyOf: (HNCharacterSet *)a_characterset;
-/**
+/*!
  * 
  */
 - (int) indexOfAnyOf: (HNCharacterSet *)a_characterset startingAt: (int)start_index;
 #   ifdef HEZELNUT_ENABLE_BLOCK
-/**
+/*!
  * 
  */
 - (int) indexOfAnyOf: (HNCharacterSet *)a_characterset startingAt: (int)start_index ifAbsent: a_block;
@@ -532,7 +536,7 @@ static void _hn_cstring_destroy(char* cs) {
 #endif  /* def HEZELNUT_HAS_MUTABLESTRING */
 
 
-/**
+/*!
  * index 番目の文字の leading char が何個続くかを返します。
  */
 - (int) leadingCharRunLengthAt: (int)index {
@@ -557,7 +561,7 @@ static void _hn_cstring_destroy(char* cs) {
 }
 
 
-/**
+/*!
  * index 行目より文字数が多い行の文字列を返します。
  */
 - (id <HNPString>) lineCorrespodingToIndex: (int)index {
@@ -565,14 +569,14 @@ static void _hn_cstring_destroy(char* cs) {
 }
   
 
-/**
+/*!
  * 文字列の行数をカウントします。
  */
 - (int) lineCount {
 }
 
 
-/**
+/*!
  * index 行目の文字列を返します。
  */
 - (id <HNPString>) lineNumber: (int)index;
@@ -580,7 +584,7 @@ static void _hn_cstring_destroy(char* cs) {
 
 
 #ifdef HEZELNUT_ENABLE_BLOCK
-/**
+/*!
  * 行毎に a_block を評価します。ただし、最後の行が CR のみの場合は評価しません。
  */
 - (void) linesDo: a_block;

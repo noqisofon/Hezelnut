@@ -4,16 +4,21 @@
 #import <hezelnut/HNObject.h>
 
 
-@interface HNMagunitude <HNPComparable> : HNObject
-/** @addgroup testing */
-/**
- * レシーバか a_magunitude、何れか大きい値を返します。
+/*! \interface HNMagunitude HNMagunitude.h
+  
+ */
+@interface HNMagunitude : HNObject < HNPComparable >
+/*! \name testing
+
+ */
+/*!
+  レシーバか a_magunitude、何れか大きい値を返します。
  */
 - (HNMagunitude *) max: (HNMagunitude *)a_magunitude;
 
 
-/**
- * レシーバか a_magunitude、何れか小さい値を返します。
+/*!
+  レシーバか a_magunitude、何れか小さい値を返します。
  */
 - (HNMagunitude *) min: (HNMagunitude *)a_magunitude;
 /*

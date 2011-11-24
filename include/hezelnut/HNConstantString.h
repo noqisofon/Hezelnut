@@ -13,12 +13,12 @@
   unsigned int length_;
   char* c_string_;
 }
-/*! \addtogroup instance creation
-  
+/*! \name instance creation
+  特定の文字列、または初期化用メソッドのショートカットです。
  */
 /*! @{ */
 /*!
-  
+  '\\n' を返します。
  */
 + (HNConstantString *) cr;
 
@@ -93,8 +93,8 @@
 #endif  /* ifdef HEZELNUT_HAS_STREAM */
 /*! @} */
 
-/*! \addgroup initialization
-  
+/*! \name initialization
+  オブジェクトを初期化するためのメソッドです。
  */
 /*! @{ */
 /*!
@@ -108,7 +108,7 @@
 
 
 /*!
-  
+  指定された C プリミティブ文字列を受け取って HNConstantString オブジェクトを初期化します。
  */
 - (id) initWithCString: (const char *)cs;
 

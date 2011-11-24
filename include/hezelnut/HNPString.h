@@ -5,27 +5,27 @@
 
 
 /*! \protocol HNPString  HNPString.h
-  
+  文字列クラスに必要なメソッドを集めたプロトコルです。
  */
 @protocol HNPString
-/*! \addtogroup primitive accessing
+/*! \name primitive accessing
   
  */
 /*! @{ */
 /*!
-  
+  内部の C プリミティブ文字列を返します。
  */
 - (const char *) cString;
 
 
 /*!
-  
+  文字列の長さを返します。
  */
 - (unsigned int) length;
 /*! @} */
 
 
-/*! \addtogroup accessing
+/*! \name accessing
   
  */
 /*! @{ */
@@ -215,7 +215,7 @@
 /*! @} */
 
 
-/*! \addtogroup comparing
+/*! \name comparing
   
  */
 /*! @{ */
@@ -349,7 +349,7 @@
 /*! @} */
 
 
-/*! \addtogroup copying
+/*! \name copying
   
  */
 /*! @{ */
@@ -374,7 +374,7 @@
 /*! @} */
 
 
-/*! \addtogroup converting
+/*! \name converting
 
  */
 /*! @{ */
@@ -484,7 +484,7 @@
   全て小文字に変換したものを返します。
  */
 - (id <HNPString>) asLowercase;
-
+/*! @} */
 @end
 
 

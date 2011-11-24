@@ -3,7 +3,7 @@
 
 
 @protocol HNPByteSequence
-/*! \addtogroup accessing */
+/*! \name accessing */
 /*! \{ */
 /*!
     レシーバの index 番目の値を返します。
