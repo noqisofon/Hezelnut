@@ -47,7 +47,8 @@ AR = ar
 ARFLAGS = cru
 libHezelnut_a_AR = $(AR) $(ARFLAGS)
 libHezelnut_a_LIBADD =
-am_libHezelnut_a_OBJECTS = HNConstantString.$(OBJEXT)
+am_libHezelnut_a_OBJECTS = HNConstantString.$(OBJEXT) \
+	HNObject.$(OBJEXT)
 libHezelnut_a_OBJECTS = $(am_libHezelnut_a_OBJECTS)
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)/include
 depcomp = $(SHELL) $(top_srcdir)/depcomp
@@ -58,6 +59,10 @@ OBJCCOMPILE = $(OBJC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 OBJCLD = $(OBJC)
 OBJCLINK = $(OBJCLD) $(AM_OBJCFLAGS) $(OBJCFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
+COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
+	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+CCLD = $(CC)
+LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
 SOURCES = $(libHezelnut_a_SOURCES)
 DIST_SOURCES = $(libHezelnut_a_SOURCES)
 ETAGS = etags
@@ -156,7 +161,9 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 noinst_LIBRARIES = libHezelnut.a
 libHezelnut_a_SOURCES = \
-	HNConstantString.m
+	HNConstantString.m  \
+	HNObject.m          \
+	HNStream.h
 
 all: all-am
 
@@ -207,6 +214,7 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/HNConstantString.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/HNObject.Po@am__quote@
 
 .m.o:
 @am__fastdepOBJC_TRUE@	$(OBJCCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<

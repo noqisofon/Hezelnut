@@ -1,3 +1,24 @@
+//  
+//  HNObject.h
+//  
+//  Auther:
+//       ned rihine <ned.rihine@gmail.com>
+// 
+//  Copyright (c) 2011 rihine All rights reserved.
+// 
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+// 
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+// 
+//  You should have received a copy of the GNU General Public License
+//  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// 
 #import <hezelnut/hezelnut.h>
 
 #ifdef HEZELNUT_HAVE_CLASS
@@ -47,6 +68,10 @@
 
 static id Dependencies = nil;
 static id FinalizableObjects = nil;
+
+
+static id hn_object_all_owners(HNObject* self);
+static void hn_object_change_class_to(id self, HNBehavior* a_behavior);
 
 
 @implementation HNObject
@@ -616,13 +641,21 @@ static id FinalizableObjects = nil;
 }
 
 
+id hn_object_all_owners(HNObject* self) {
+}
+
+
 - (id <HNPCollectable>) allOwners {
   return hn_object_all_owners( self );
 }
 
 
+void hn_object_change_class_to(id self, HNBehavior* a_behavior) {
+}
+
+
 - (void) changeClassTo: (HNBehavior *)a_behavior {
-  hn_object_change_class_to( self, a_behavior );
+  hn_object_change_class_to( self, a_behavior);
 }
 
 
