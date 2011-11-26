@@ -24,6 +24,18 @@
 
 #import <objc/NXConstStr.h>
 
+#import <hezelnut/HNPCollectable.h>
+
+#ifdef HEZELNUT_HAS_SYMBOL
+@class HNSymbol;
+#endif  /* def HEZELNUT_HAS_SYMBOL */
+#ifdef HEZELNUT_HAS_ORDERED_COLLECTION
+@class HNOrderedCollection;
+#endif  /* def HEZELNUT_HAS_ORDERED_COLLECTION */
+#ifdef HEZELNUT_HAS_CHARACTER_SET
+@class HNCharacterSet;
+#endif  /* def HEZELNUT_HAS_CHARACTER_SET */
+
 
 /*! \protocol HNPString  HNPString.h
   文字列クラスに必要なメソッドを集めたプロトコルです。
@@ -84,12 +96,12 @@
 - (int) findAnySubstr: (id <HNPString>)delimiters startingAt: (int)start;
 
 
-#ifdef HEZELNUT_HAS_ORDEREDCOLLECTION
+#ifdef HEZELNUT_HAS_ORDERED_COLLECTION
 /*!
   delimiters の文字列をデリミタとみなして、デリミタで分断した文字列を NSOrderedCollection のインスタンスとして返します。
  */
 - (HNOrderedCollection *) findBetweenSubstrs: (id <HNPString>)delimiters;
-#endif  /* ifdef defined(HEZELNUT_HAS_ORDEREDCOLLECTION) */
+#endif  /* ifdef defined(HEZELNUT_HAS_ORDERED_COLLECTION) */
 
 
 /*!
@@ -118,7 +130,7 @@
 - (int) findString: (id <HNPString>)sub_string startingAt: (int)start_index caseSensitive: (BOOL)case_sensitive;
 
 
-#ifdef HEZELNUT_HAS_ORDEREDCOLLECTION
+#ifdef HEZELNUT_HAS_ORDERED_COLLECTION
 /*!
   delimiters 文字、または文字列で分割した HNOrderedCollection オブジェクトを返します。
  */
@@ -131,7 +143,7 @@
   delimiters 文字、または文字列で分割するとき keepers 文字は残しておきます。
  */
 - (HNOrderedCollection *) findTokens: (id <HNPString>)delimiters keep: (id <HNPString>)keepers;
-#endif  /* ifdef defined(HEZELNUT_HAS_ORDEREDCOLLECTION) */
+#endif  /* ifdef defined(HEZELNUT_HAS_ORDERED_COLLECTION) */
 
 
 /*!
@@ -172,7 +184,7 @@
 #endif  /* def HEZELNUT_ENABLE_BLOCK */
 
 
-#ifdef HEZELNUT_HAS_MUTABLESTRING
+#ifdef HEZELNUT_HAS_CHARACTER_SET
 /**
  * a_characterset で与えられた文字が最初に見つかったインデックス値を返します。
  */
@@ -187,7 +199,7 @@
  */
 - (int) indexOfAnyOf: (HNCharacterSet *)a_characterset startingAt: (int)start_index ifAbsent: a_block;
 #   endif  /* def HEZELNUT_ENABLE_BLOCK */
-#endif  /* def HEZELNUT_HAS_MUTABLESTRING */
+#endif  /* def HEZELNUT_HAS_CHARACTER_SET */
 
 
 /*!
@@ -309,7 +321,7 @@
 /*!
   a_collection の要素の何れかがレシーバの最後の文字列に一致すれば真を返します。
  */
-- (BOOL) endsWithAnyOf: (id <JNPCollectable>)a_collection;
+- (BOOL) endsWithAnyOf: (id <HNPCollectable>)a_collection;
 
 
 /*!
@@ -399,12 +411,12 @@
 
  */
 /*! @{ */
-#ifdef HEZELNUT_HAS_MUTABLESTRING
+#ifdef HEZELNUT_HAS_MUTABLE_STRING
 /*!
   レシーバを HNMutableString に変換して返します。
  */
 - (HNMutableString *) asMutableString;
-#endif  /* ifdef HEZELNUT_HAS_MUTABLESTRING */
+#endif  /* ifdef HEZELNUT_HAS_MUTABLE_STRING */
 
 
 #ifdef HEZELNUT_HAS_BYTEARRAY

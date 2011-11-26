@@ -1,0 +1,265 @@
+//  
+//  HNClass.m
+//  
+//  Auther:
+//       Ned Rihine <ned.rihine@gmail.com>
+// 
+//  Copyright (c) 2011 rihine All rights reserved.
+// 
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+// 
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+// 
+//  You should have received a copy of the GNU General Public License
+//  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
+
+
+@implementation HNClass
+#ifdef HEZELNUT_ENABLE_BLOCK
++ (id) allPoolDictionaries: (id <HNPCollectable>)list except: (id)in_white do: a_block {
+    id white;
+    HNIdentitySet* grey;
+    HNOrderedCollection* order;
+    id descend;
+
+    if ( [ list isEmpty ] )
+        return self;
+
+    white = [ in_white copy ];
+    grey = [ HNIdentitySet new: [ list size ] ];
+    order = [ HNOrderedCollection new: [ list size ] ];
+
+    descend = ^(id pool) {
+        if ( ![ white includes: pool ] ) {
+            if ( [ grey includes: pool ] )
+                [ HNInvalidValueError signalOn: list
+                                        reason: @"includes circular dependency" ];
+        }
+        // #allSuperspaces is not available on all pools
+        [ grey add: pool ];
+        [ [ pool allSuperspaces ] reverseDo: descend ];
+        [ order addFirst: pool ];
+        [ white add: pool ];
+    };
+    [ list reverseDo: descend ];
+    [ order do: a_block ];
+
+    return self;
+}
+#endif  /* def HEZELNUT_ENABLE_BLOCK */
+
+
++ (void) initialize {
+#ifdef HEZELNUT_ENABLE_BLOCK
+    [ self subclassesDo: ^(id each) {
+            [ [ each instanceClass ] initializeAsRootClass ];
+        } ];
+#endif  /* def HEZELNUT_ENABLE_BLOCK */
+}
+
+
+- (id <HNPString>)name { return name_; }
+
+
+- (id) environment { return environment_; }
+- (id) environment: (id)a_namespace {
+    environment_ = a_namespace;
+    /*
+      ここらへんの処理は、イメージファイルを更新するためのものだと思われるが、イメージファイルは更新し
+      ないので要らないかもしれない。
+     */
+    [ [ [ self asClass ]
+          compileAll ]
+        compileAllSubclasses ];
+    [ [ [ self asMetaClass ]
+          compileAll ]
+        compileAllSubclasses ];
+}
+
+
+- (id <HNPString>) category { return category_; }
+- (id) category: (id <HNPString>)a_string {
+    category_ = a_string;
+    return self;
+}
+
+
+- (id) superclass: (HNClass)a_class {
+    if ( [ a_class isNil ] && [ [ self superclass ] notNil ] )
+        [ self initializeAsRootClass ];
+
+    [ super superclass: a_class ];
+
+    return self;
+}
+
+
+- (id) addClassVarName: (id <HNPString>)a_string {
+    id sym = [ a_string asClassPoolKey ];
+
+    if ( ![ [ self classPool ] includesKey: sym ] )
+        [ [ self classPool ] at: sym put: nil ];
+  
+    return [ [ self classPool ] associationAt: sym ];
+}
+
+#ifdef HEZELNUT_ENABLE_BLOCK
+- (id) addClassVarName: (id <HNPString>)a_string value: a_block {
+  
+}
+#else
+- (id) addClassVarName: (id <HNPString>)a_string value: (id)a_object {
+    return [ [ [ self addClassVarName: a_string ] value: a_object ] yourself ];
+}
+#endif  /* def HEZELNUT_ENABLE_BLOCK */
+
+
+- (id) bindingFor: (id <HNPString>)a_string {
+    id sym = [ a_string asClassPoolKey ];
+
+    return [ [ self classPool ] associationAt: sym ];
+}
+
+
+- (id) removeClassVarName: (id <HNPString>)a_string {
+    id sym = [ a_string asClassPoolKey ];
+
+    if ( !( [ class_variables_ notNil ] && [ class_variables_ includesKey: sym ] ) )
+        [ NHNotFoundError signalOn: a_string what: @"class variable" ];
+    [ class_variables_ removeKey: sym ];
+
+    [ [ [ self asClass ]
+          compileAll ]
+        compileAllSubclasses ];
+    [ [ [ self asMetaClass ]
+          compileAll ]
+        compileAllSubclasses ];
+}
+
+
+- (id <HNPDictionary>) classPool {
+    if ( [ class_variables_ isNil ] )
+        class_variables_ = [ [ HNBindingDictionary new ] environment: self ];
+    return class_variables_;
+}
+
+
+- (id <HNPSet>) classVarNames {
+    if ( [ class_variables_ notNil ] )
+        return [ class_variables_ keys ];
+    else
+        return [ HNSet new ];
+}
+
+
+- (id <HNPSet>) allClassVarNames {
+    id super_var_names = [ self classVarNames ];
+#ifndef HEZELNUT_ENABLE_BLOCK
+    id it = [ [ self allSuperclasses ] allSuperclasssesIterator ];
+    id each;
+    for ( ; [ it finished ]; [ it next ] ) {
+        each = [ it current ];
+        [ super_var_names addAll: [ each classVarNames ] ];
+    }
+#else
+    [ [ self allSuperclasses ] do: ^(id each) {
+                [ super_var_names addAll: [ each classVarNames ] ];
+            } ];
+#endif  /* def HEZELNUT_ENABLE_BLOCK */
+    return super_var_names;
+}
+
+
+- (id) addSharedPool: (id <HNPDictionary>)a_dictionary {
+    if ( shared_pools_ == nil )
+        shared_pools_ = [ HNSet empty ];
+    shared_pools_ = [ shared_pools_ copyWithout: a_dictionary ];
+
+    return self;
+}
+
+
+- (id <HNPSet>) sharedPool {
+    id set = [ HNSet new ];
+#ifndef HEZELNUT_ENABLE_BLOCK
+    id it, each;
+#endif  /* def HEZELNUT_ENABLE_BLOCK */
+    /*
+      GNU の Objective-C ではブロックを使うことができません。
+      正確に云えば、ブロックはファーストクラスではないのです。
+      つまり、コード中にブロックを記述することはできず、必ず別の箇所に定義してから、高階関数として渡さなければならないということです。
+      これは美しくありませんし、ブロック替わりの関数への変更が必要な場合、スクロールバーがヘトヘトに疲れてしまう場合があるかもしれません。
+    */
+    if ( [ shared_pools_ notNil ] && [ shared_pools_ notEmpty ] ) {
+#ifdef HEZELNUT_ENABLE_BLOCK
+        [ self environment associationsDo: ^(id each) {
+                if ( [ [ shared_pools_ identityIncludes: each ] value ] )
+                    [ set add: [ each key ] ];
+            } ];
+#else
+        /*
+          とすれば、コレクション中の要素の全てに同じ処理を適用したい時、どの様にすればブロック無しでも同じようなことができるでしょう？
+          答えは Iterator パターンです。
+          世の中には二種類の反復方法があり、内部イテレータと外部イテレータがそれです。
+          内部イテレータは言語に組み込まれているものを云います。
+          ブロックがファーストクラスで、それを関数の引数として渡すことができるなら、内部イテレータを使うことができます。
+          これは要素の反復以外にも使い道があるのですが、長くなるので割愛することにしましょう。
+          この内部イテレータが無理でも諦めてはいけません。
+          内部イテレータが言語仕様的に無理でも、外部イテレータがあります。
+          外部イテレータは for や while などの制御構文を使い、ロジックをさらけ出すことになります。
+          イテレータがやることは以下の 3 つです:
+
+          + 次の要素があるかどうか調べる => finished
+          + 次の要素に移る              => next
+          + 現在の要素を返す            => current
+
+      
+        */
+        it = [ shared_pools_ associationsIterator ];
+        for ( ; [ it finished ]; [ it next ] ) {
+            each = [ it current ];
+
+            if ( [ [ shared_pools_ identityIncludes: each ] value ] )
+                [ set add: [ each key ] ];
+        }
+#endif  /* def HEZELNUT_ENABLE_BLOCK */
+    }
+    return set;
+}
+
+
+- (id <HNPIndexedCollection>) classPragmas {
+    return [ HNArray with: [ HNSymbol value: @"category" ]
+                     with: [ HNSymbol value: @"comment" ] ];
+}
+
+
+- (id) initializeAsRootClass {
+    [ self registerHandler: ^(id method, id ann) {
+            [ method rewriteAsCCall: [ [ ann arguments ] at: 1 ] for: self ];
+        }
+      forPragma: [ HNSymbol value: @"cCall" ] ];
+    [ self registerHandler: ^(id method, id ann) {
+            [ method rewriteAsCCall: [ [ ann arguments ] at: 1 ]
+                          returning: [ [ ann arguments ] at: 2 ]
+                               args: [ [ ann arguments ] at: 3 ] ];
+        }
+      forPragma: [ HNSymbol value: @"cCall" ] ];];
+}
+
+
+- (id) initialize { return self; }
+@end
+
+
+// Local Variables:
+//   coding: utf-8
+//   mode: objc
+// End:

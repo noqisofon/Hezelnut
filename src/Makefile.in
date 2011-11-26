@@ -47,7 +47,8 @@ AR = ar
 ARFLAGS = cru
 libHezelnut_a_AR = $(AR) $(ARFLAGS)
 libHezelnut_a_LIBADD =
-am_libHezelnut_a_OBJECTS = HNConstantString.$(OBJEXT) \
+am_libHezelnut_a_OBJECTS = HNBehavior.$(OBJEXT) HNClass.$(OBJEXT) \
+	HNClassDescription.$(OBJEXT) HNConstantString.$(OBJEXT) \
 	HNObject.$(OBJEXT)
 libHezelnut_a_OBJECTS = $(am_libHezelnut_a_OBJECTS)
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)/include
@@ -161,8 +162,11 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 noinst_LIBRARIES = libHezelnut.a
 libHezelnut_a_SOURCES = \
-	HNConstantString.m  \
-	HNObject.m          \
+	HNBehavior.m	     \
+	HNClass.m            \
+    HNClassDescription.m \
+	HNConstantString.m   \
+	HNObject.m           \
 	HNStream.h
 
 all: all-am
@@ -213,6 +217,9 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/HNBehavior.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/HNClass.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/HNClassDescription.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/HNConstantString.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/HNObject.Po@am__quote@
 

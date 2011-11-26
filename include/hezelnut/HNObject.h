@@ -22,7 +22,14 @@
 #ifndef Hezelnut_HNObject_h
 #define Hezelnut_HNObject_h
 
+#import <hezelnut/hn_literals.h>
+#import <hezelnut/HNPStreamable.h>
+
 #import <objc/Object.h>
+
+#ifdef HEZELNUT_HAVE_CLASS
+@class HNClass;
+#endif  /* def HEZELNUT_HAVE_CLASS */
 
 
 /*!
@@ -33,7 +40,9 @@
  */
 @interface HNObject : Object
 {
+#ifdef HEZELNUT_HAVE_CLASS
   HNClass hn_is_a;
+#endif  /* def HEZELNUT_HAVE_CLASS */
 }
 /*! \name initialization
   
@@ -310,7 +319,7 @@
 /*!
  * 
  */
-- (id <HNPString>) basicPrintOn: (HNPStreaming *)a_stream;
+- (id <HNPString>) basicPrintOn: (id <HNPStreamable>)a_stream;
 
 
 #ifdef HEZELNUT_HAVE_TRANSCRIPT
