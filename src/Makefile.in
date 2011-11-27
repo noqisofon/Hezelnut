@@ -47,9 +47,11 @@ AR = ar
 ARFLAGS = cru
 libHezelnut_a_AR = $(AR) $(ARFLAGS)
 libHezelnut_a_LIBADD =
-am_libHezelnut_a_OBJECTS = HNBehavior.$(OBJEXT) HNClass.$(OBJEXT) \
-	HNClassDescription.$(OBJEXT) HNConstantString.$(OBJEXT) \
-	HNObject.$(OBJEXT)
+am_libHezelnut_a_OBJECTS = HNArray.$(OBJEXT) HNClass.$(OBJEXT) \
+	HNConstantString.$(OBJEXT) HNObject.$(OBJEXT) \
+	HNStream.$(OBJEXT) HNBehavior.$(OBJEXT) \
+	HNClassDescription.$(OBJEXT) HNNil.$(OBJEXT) \
+	HNRandom.$(OBJEXT)
 libHezelnut_a_OBJECTS = $(am_libHezelnut_a_OBJECTS)
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)/include
 depcomp = $(SHELL) $(top_srcdir)/depcomp
@@ -60,10 +62,6 @@ OBJCCOMPILE = $(OBJC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 OBJCLD = $(OBJC)
 OBJCLINK = $(OBJCLD) $(AM_OBJCFLAGS) $(OBJCFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
-COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
-	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-CCLD = $(CC)
-LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
 SOURCES = $(libHezelnut_a_SOURCES)
 DIST_SOURCES = $(libHezelnut_a_SOURCES)
 ETAGS = etags
@@ -162,12 +160,15 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 noinst_LIBRARIES = libHezelnut.a
 libHezelnut_a_SOURCES = \
-	HNBehavior.m	     \
+	HNArray.m            \
 	HNClass.m            \
-    HNClassDescription.m \
 	HNConstantString.m   \
 	HNObject.m           \
-	HNStream.h
+	HNStream.m           \
+	HNBehavior.m         \
+	HNClassDescription.m \
+	HNNil.m              \
+	HNRandom.m
 
 all: all-am
 
@@ -217,11 +218,15 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/HNArray.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/HNBehavior.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/HNClass.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/HNClassDescription.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/HNConstantString.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/HNNil.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/HNObject.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/HNRandom.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/HNStream.Po@am__quote@
 
 .m.o:
 @am__fastdepOBJC_TRUE@	$(OBJCCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<

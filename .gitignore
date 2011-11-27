@@ -5,6 +5,7 @@
 *.log
 *.diff
 *.pidb
+*.sh
 *.o
 config.status
 stamp-h1

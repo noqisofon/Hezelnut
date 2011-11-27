@@ -20,6 +20,19 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
+#ifdef HEZELNUT_HAVE_IDENTITY_SET
+#   import <hezelnut/HNIdentitySet.h>
+#endif  /* def HEZELNUT_HAVE_IDENTITY_SET */
+#ifdef HEZELNUT_HAVE_BINDING_DICTIONARY
+#   import <hezelnut/HNBindingDictionary.h>
+#endif  /* def HEZELNUT_HAVE_BINDING_DICTIONARY */
+#ifdef HEZELNUT_HAVE_ORDERED_COLLECTION
+#   import <hezelnut/HNOrderedCollection.h>
+#endif  /* def HEZELNUT_HAVE_ORDERED_COLLECTION */
+#ifdef HEZELNUT_HAVE_INVALID_VALUE_ERROR
+#   import <hezelnut/HNInvalidValueError.h>
+#endif  /* def HEZELNUT_HAVE_INVALID_VALUE_ERROR */
+
 
 @implementation HNClass
 #ifdef HEZELNUT_ENABLE_BLOCK
@@ -72,8 +85,8 @@
 - (id) environment: (id)a_namespace {
     environment_ = a_namespace;
     /*
-      ここらへんの処理は、イメージファイルを更新するためのものだと思われるが、イメージファイルは更新し
-      ないので要らないかもしれない。
+      ここらへんの処理は、イメージファイルを更新するためのものだと思われるが、イメージファイルは更新しないので
+      要らないかもしれない。
      */
     [ [ [ self asClass ]
           compileAll ]
@@ -91,7 +104,7 @@
 }
 
 
-- (id) superclass: (HNClass)a_class {
+- (id) superclass: (HNClass *)a_class {
     if ( [ a_class isNil ] && [ [ self superclass ] notNil ] )
         [ self initializeAsRootClass ];
 
@@ -144,13 +157,18 @@
 }
 
 
+
+#ifdef HEZELNUT_HAVE_BINDING_DICTIONARY
 - (id <HNPDictionary>) classPool {
     if ( [ class_variables_ isNil ] )
         class_variables_ = [ [ HNBindingDictionary new ] environment: self ];
+
     return class_variables_;
 }
+#endif  /* def HEZELNUT_HAVE_BINDING_DICTIONARY */
 
 
+#ifdef HEZELNUT_HAVE_SET
 - (id <HNPSet>) classVarNames {
     if ( [ class_variables_ notNil ] )
         return [ class_variables_ keys ];
@@ -161,18 +179,18 @@
 
 - (id <HNPSet>) allClassVarNames {
     id super_var_names = [ self classVarNames ];
-#ifndef HEZELNUT_ENABLE_BLOCK
+#   ifndef HEZELNUT_ENABLE_BLOCK
     id it = [ [ self allSuperclasses ] allSuperclasssesIterator ];
     id each;
     for ( ; [ it finished ]; [ it next ] ) {
         each = [ it current ];
         [ super_var_names addAll: [ each classVarNames ] ];
     }
-#else
+#   else
     [ [ self allSuperclasses ] do: ^(id each) {
                 [ super_var_names addAll: [ each classVarNames ] ];
             } ];
-#endif  /* def HEZELNUT_ENABLE_BLOCK */
+#   endif  /* def HEZELNUT_ENABLE_BLOCK */
     return super_var_names;
 }
 
@@ -188,9 +206,9 @@
 
 - (id <HNPSet>) sharedPool {
     id set = [ HNSet new ];
-#ifndef HEZELNUT_ENABLE_BLOCK
+#   ifndef HEZELNUT_ENABLE_BLOCK
     id it, each;
-#endif  /* def HEZELNUT_ENABLE_BLOCK */
+#   endif  /* def HEZELNUT_ENABLE_BLOCK */
     /*
       GNU の Objective-C ではブロックを使うことができません。
       正確に云えば、ブロックはファーストクラスではないのです。
@@ -198,12 +216,12 @@
       これは美しくありませんし、ブロック替わりの関数への変更が必要な場合、スクロールバーがヘトヘトに疲れてしまう場合があるかもしれません。
     */
     if ( [ shared_pools_ notNil ] && [ shared_pools_ notEmpty ] ) {
-#ifdef HEZELNUT_ENABLE_BLOCK
+#   ifdef HEZELNUT_ENABLE_BLOCK
         [ self environment associationsDo: ^(id each) {
                 if ( [ [ shared_pools_ identityIncludes: each ] value ] )
                     [ set add: [ each key ] ];
             } ];
-#else
+#   else
         /*
           とすれば、コレクション中の要素の全てに同じ処理を適用したい時、どの様にすればブロック無しでも同じようなことができるでしょう？
           答えは Iterator パターンです。
@@ -229,16 +247,19 @@
             if ( [ [ shared_pools_ identityIncludes: each ] value ] )
                 [ set add: [ each key ] ];
         }
-#endif  /* def HEZELNUT_ENABLE_BLOCK */
+#   endif  /* def HEZELNUT_ENABLE_BLOCK */
     }
     return set;
 }
+#endif  /* def HEZELNUT_HAVE_SET */
 
 
+#ifdef HEZELNUT_HAVE_ARRAY
 - (id <HNPIndexedCollection>) classPragmas {
     return [ HNArray with: [ HNSymbol value: @"category" ]
                      with: [ HNSymbol value: @"comment" ] ];
 }
+#endif  /* HEZELNUT_HAVE_ARRAY */
 
 
 - (id) initializeAsRootClass {
@@ -256,6 +277,27 @@
 
 
 - (id) initialize { return self; }
+
+
+- (BOOL) equals: (id)a_class {
+    return [ a_class isKindOf: Class ] && [ [ self name ] equals: [ a_class name ] ];
+}
+
+
+- (id) extend {
+    id method = [ [ self kindOfSubclass ] concat: @"instanceVariableNames:classVariableNames:poolDictionaries:category:" ];
+
+    return [ self perform: [ method: asSymbol ]
+                  withArguments:
+                      [ [ self name ] asSymbol ],
+                  @"",
+                  @"",
+                  @"",
+                  @"Extensions" ];
+}
+
+
+- (BOOL) inheritShape { return NO; }
 @end
 
 

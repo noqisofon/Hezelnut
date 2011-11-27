@@ -66,41 +66,42 @@
 #import <hezelnut/HNObject.h>
 
 
-static id Dependencies = nil;
-static id FinalizableObjects = nil;
-
-
 static id hn_object_all_owners(HNObject* self);
 static void hn_object_change_class_to(id self, HNBehavior* a_behavior);
 
 
 @implementation HNObject
+static id shared_dependencies = nil;
+static id shared_finalizable_objects = nil;
+
 
 + (id) update: (id)aspect {
     if ( ![ aspect equals returnFromSnapshot ] )
         return self;
 
     //[ ContextPart checkPresenceOfJIT ];
-    FinalizableObjects = nil;
+    shared_finalizable_objects = nil;
+
+    return self;
 }
 
 
 + (id) dependencies {
-    return Dependencies;
+    return shared_dependencies;
 }
 + (id) dependencies: (id)an_object {
-    Dependencies = an_object;
+    shared_dependencies = an_object;
 
-    return Dependencies;
+    return shared_dependencies;
 }
 
 
 #ifdef HEZELNUT_HAVE_SET
 + (id) finalizableObjects {
-    if ( [ FinalizableObjects isNil ] )
-        FinalizableObjects = [ HNSet new ];
+    if ( [ shared_finalizable_objects isNil ] )
+        shared_finalizable_objects = [ HNSet new ];
 
-    return FinalizableObjects;
+    return shared_finalizable_objects;
 }
 #endif  /* def HEZELNUT_HAVE_SET */
 
@@ -181,28 +182,28 @@ static void hn_object_change_class_to(id self, HNBehavior* a_behavior);
 #ifdef HEZELNUT_HAVE_ORDERED_COLLECTION
 - (id) addDependent: (id)an_object {
 #   ifndef HEZELNUT_ENABLE_BLOCK
-    if ( Dependencies == nil )
-        Dependencies = [ HNOrderedCollection new ];
-    return [ [ Dependencies at: self ] add: an_object ];
+    if ( shared_dependencies == nil )
+        shared_dependencies = [ HNOrderedCollection new ];
+    return [ [ shared_dependencies at: self ] add: an_object ];
 #   else
-    return [ [ Dependencies at: self ifAbsentPut: ^(id) { [ HNOrderedCollection new ] } ] add: an_object ];
+    return [ [ shared_dependencies at: self ifAbsentPut: ^(id) { [ HNOrderedCollection new ] } ] add: an_object ];
 #   endif  /* ndef HEZELNUT_ENABLE_BLOCK */
 }
 
 
 - (id) removeDependent: (id)an_object {
-    id dependencies = [ Dependencies at: self ];
+    id dependencies = [ shared_dependencies at: self ];
     if ( dependencies == nil )
         dependencies = an_object;
     [ dependencies remove: an_object ];
     if ( [ dependencies size ] < 1 )
-        [ Dependencies removeKey: self ];
-    return an_object
-        }
+        [ shared_dependencies removeKey: self ];
+    return an_object;
+}
 
 
 - (HNOrderedCollection *) dependents {
-    HNOrderedCollection* dependencies = [ Dependencies at: self ];
+    HNOrderedCollection* dependencies = [ shared_dependencies at: self ];
     if ( dependencies == nil )
         dependencies = HNOrderedCollection new;
     return [ dependencies asOrderedCollection ];
@@ -211,14 +212,14 @@ static void hn_object_change_class_to(id self, HNBehavior* a_behavior);
 
 
 - (void) release {
-    [ Dependencies removeKey: self ];
+    [ shared_dependencies removeKey: self ];
 }
 
 
 - (id) addToBeFinalized {
     return  [ [ self class ] finalizeableObjects add: [ [ HNHomedAssociation key: self
                                                                            value: nil
-                                                                     environment: FinalizableObjects ] makeEphemeron ] yourself ];
+                                                                     environment: shared_finalizable_objects ] makeEphemeron ] yourself ];
 }
 
 
@@ -408,10 +409,12 @@ static void hn_object_change_class_to(id self, HNBehavior* a_behavior);
 }
 #endif  /* def HEZELNUT_HAVE_CONSTANT_ARRAY */
 
+
 #ifdef HEZELNUT_HAVE_STREAM
 - (id <HNPString>) displayString {
     id stream = [ HNWriteStream on: [ HNString new ] ];
     [ self displayOn: stream ];
+
     return [ stream contents ];
 }
 
@@ -438,6 +441,7 @@ static void hn_object_change_class_to(id self, HNBehavior* a_behavior);
 - (id <HNPString>) printString {
     id stream = [ HNWriteStream on: [ HNString new ] ];
     [ self printOn: stream ];
+
     return [ stream contents ];
 }
 
@@ -446,6 +450,7 @@ static void hn_object_change_class_to(id self, HNBehavior* a_behavior);
     [ a_stream nextPutAll: [ [ self class ] article ] ];
     [ a_stream space ];
     [ a_stream nextPutAll: [ [ self class ] name ] ];
+
     return self;
 }
 #endif  /* def HEZELNUT_HAVE_STREAM */
@@ -455,6 +460,7 @@ static void hn_object_change_class_to(id self, HNBehavior* a_behavior);
     [ a_stream nextPutAll: [ [ self class ] article ] ];
     [ a_stream space ];
     [ a_stream nextPutAll: [ [ self class ] name ] ];
+
     return self;
 }
 
@@ -462,12 +468,14 @@ static void hn_object_change_class_to(id self, HNBehavior* a_behavior);
 #ifdef HEZELNUT_HAVE_TRANSCRIPT
 - (id) print {
     [ HNTranscript show: [ self printString ] ];
+
     return self;
 }
 
 
 - (id) printNl {
     [ HNTranscript showCr: [ self printString ] ];
+
     return self;
 }
 #endif  /* def HEZELNUT_HAVE_TRANSCRIPT */
@@ -478,6 +486,7 @@ static void hn_object_change_class_to(id self, HNBehavior* a_behavior);
     [ self basicPring ];
     [ HNstdout nextPut: [ HNCharacter nl ] ];
     [ HNstdout flush ];
+
     return self;
 }
 
@@ -504,9 +513,22 @@ static void hn_object_change_class_to(id self, HNBehavior* a_behavior);
     BOOl has_semi = NO;
     int instance_size = [ klass instSize ],
         valid_size = 0;
+    /*
+      ここは流れるようなインターフェイスといって、このように書けるのです:
+      
+        [ [ a_stream nextPut: '(' ] nextPutAll: [ klass storeString ] ];
 
+      ですが、ちょっと読みにくいとは思いませんか？
+      Smalltalk では、同じ処理をこんな風に書きます:
+
+        a_stream nextPut: $(; nextPutAll: klass storeString
+
+      私もあまり Smalltalk については詳しくないのですが、';' というのは行の終わり
+      を表すわけではありません。
+      返り値、この場合は a_stream と同じ値に次のセレクタ、nextPutAll: が送信されることになります。
+     */
     [ a_stream nextPut: '(' ];
-    [ a_stream nextPutAll [ klass storeString ] ];
+    [ a_stream nextPutAll: [ klass storeString ] ];
 
     for ( i = 0; i < instance_size; ++ i ) {
         [ a_stream nextPutAll: @" instVarAt: " ];
@@ -540,6 +562,7 @@ static void hn_object_change_class_to(id self, HNBehavior* a_behavior);
  */
 - (id) store {
     [ HNTranscript show: [ self storeString ] ];
+
     return self;
 }
 
@@ -547,8 +570,9 @@ static void hn_object_change_class_to(id self, HNBehavior* a_behavior);
 /*!
  * 
  */
-- (id) storeNl{
+- (id) storeNl {
     [ HNTranscript showCr: [ self storeString ] ];
+
     return self;
 }
 #   endif  /* def HEZELNUT_HAVE_TRANSCRIPT */
@@ -614,7 +638,11 @@ static void hn_object_change_class_to(id self, HNBehavior* a_behavior);
         // 多分、try-catch と同じようなものだと思われる。
         @try {
             output = [ object printString ];
+#ifdef HEZELNUT_HAVE_ERROR
         } @catch ( HNError* err ) {
+#else
+        } @catch ( id err ) {    
+#endif  /* def HEZELNUT_HAVE_ERROR */
             output = [ err return: [ HNString format: @"%@ %@"
                                                 with: [ [ object class ] article ]
                                                 with: [ [ [ object class ] name ] asString ] ] ];

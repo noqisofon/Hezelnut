@@ -117,6 +117,9 @@
  */
 - (id) addClassVarName: (id <HNPString>)a_string value: a_block;
 #else
+/*!
+ * 
+ */
 - (id) addClassVarName: (id <HNPString>)a_string value: (id)a_object;
 #endif  /* def HEZELNUT_ENABLE_BLOCK */
 
@@ -133,12 +136,15 @@
 - (id) removeClassVarName: (id <HNPString>)a_string;
 
 
+#ifdef HEZELNUT_HAVE_BINDING_DICTIONARY
 /*!
  * クラス変数辞書を返します。
  */
 - (id <HNPDictionary>) classPool;
+#endif  /* def HEZELNUT_HAVE_BINDING_DICTIONARY */
 
 
+#ifdef HEZELNUT_HAVE_SET
 /*!
  * クラス変数辞書に登録されているクラス変数の名前のセットを返します。
  */
@@ -161,12 +167,15 @@
  * クラスで定義された共有プールを返します。
  */
 - (id <HNPSet>) sharedPool;
+#endif  /* def HEZELNUT_HAVE_SET */
 
 
+#ifdef HEZELNUT_HAVE_ARRAY
 /*!
  * このクラスのファイルアウトで書かれているプラグマを返します。
  */
 - (id <HNPIndexedCollection>) classPragmas;
+#endif  /* HEZELNUT_HAVE_ARRAY */
 
 
 /*!
@@ -179,6 +188,55 @@
  * 子クラスで再定義？
  */
 - (id) initialize;
+/*! @} */
+
+
+/*! \name testing
+  
+ */
+/*! @{ */
+- (BOOL) equals: (id)a_class;
+/*! @} */
+
+
+/*! \name instance creation
+  
+ */
+/*! @{ */
+/*!
+ * 現在の名前空間内のレシーバのバージョンを再定義します。
+ * <p>
+ * システムクラスに送られる時にこのメソッドが各種の方法であなたをかまないように出
+ * 来ますが、発生する可能性のある問題のいくつかの例については、マニュアル内の名前
+ * 空間に関するセクションを読んでください。
+ * </p>
+ */
+- (id) extend;
+
+
+/*!
+ * サブクラスはこのクラスと同じ形状を持っているかどうかを返します。デフォルトでは偽を返します。
+ */
+- (BOOL) inheritShape;
+/*! @} */
+
+
+/*! \name instance creation - alternative
+  
+ */
+/*! @{ */
+#ifdef HEZELNUT_OBSOLUTES
+/*!
+ * このメソッドを使用しないでください。IBM Smalltalk にしか存在しないメソッドです？
+ */
+- (id) categoriesFor: (id)method are: (id)categories;
+
+
+/*!
+ * このメソッドを使用しないでください。IBM Smalltalk にしか存在しないメソッドです？
+ */
+- (id) subclass: (id)classname_string instanceVariableNames: (id)class_variable_names classVarNames: string_of_class_var_names poolDictonaries: string_of_pool_names;
+#endif  /* def HEZELNUT_OBSOLUTES */
 /*! @} */
 @end
 

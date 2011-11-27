@@ -1,9 +1,12 @@
 noinst_LIBRARIES = libHezelnut.a
 
 libHezelnut_a_SOURCES =  \
-	HNBehavior.m	     \
+	HNArray.m            \
 	HNClass.m            \
-    HNClassDescription.m \
 	HNConstantString.m   \
 	HNObject.m           \
-	HNStream.h
+	HNStream.m           \
+	HNBehavior.m         \
+	HNClassDescription.m \
+	HNNil.m              \
+	HNRandom.m

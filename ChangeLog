@@ -1,0 +1,132 @@
+2011-11-26 19:27:51 +0900 ned rihine <ned.rihine@gmail.com>
+
+* インデントの修正、他。
+
++ include/hezelnut/HNBehavior.h:
+++ HNBehavior クラスの追加。
+
++ include/hezelnut/HNClass.h:
+++ HNClass クラスの追加。
+
++ include/hezelnut/HNClassDescription.h:
+++ HNClassDescription クラスの追加。
+
++ include/hezelnut/HNObject.h:
+++ ヘッダーとか HAVE_* シンボルとか。
+
++ include/hezelnut/HNPString.h:
+++ @class リストの追加？とかいろいろ。
+
++ include/hezelnut/HNRandom.h:
+++ HNRandom クラスの追加。
+
++ include/hezelnut/hn_literals.h:
+++ リテラルショートカット、HN_RITERAL_EMPTY_ARRAY と HN_RITERAL_ARRAY を追加。
+
++ include/private/vmpr_mt19937.h:
+++ HNRandom の中身用ヘッダーの追加。
+
++ src/HNBehavior.m:
+++ HNBehavior クラスの実装部の追加。
+
++ src/HNClass.m:
+++ HNClass クラスの実装部の追加。
+
++ src/HNClassDescription.m:
+++ HNClassDescription クラスの実装部の追加。
+
++ src/HNConstantString.m:
+++ インデントの修正。
+
++ src/HNObject.m:
+++ インデントの修正。
+
++ src/HNRandom.m:
+++ HNRandom クラスの実装部の追加。
+
++ src/HNStream.m:
+++ インデントの修正。
+
+
+2011-11-25 14:22:00 +0900 ned rihine <ned.rihine@gmail.com>
+
+add GPL header.
+
+
+
+2011-11-24 19:10:51 +0900 ned rihine <ned.rihine@gmail.com>
+
+* HNObject のコードを追加したんだと思う。
+
++ .doxygen:
+++ ちょっと変更。
+
++ .gitignore:
+++ atom4te.cache/ の中身を無視するようにした。
+
++ include/hezelnut/HNCharacter.h:
+++ HNMagunitude クラスをスーパークラスにするようにした。
+
++ include/hezelnut/HNConstantString.h:
+++ コメント追加したり、クラス内カテゴリ？の doxygen コマンドを修正したり。
+
++ include/hezelnut/HNMagunitude.h:
+++ クラス内カテゴリ？の doxygen コマンドを修正したり。
+
++ include/hezelnut/HNObject.h:
+++ ドーンと加筆。
+
++ include/hezelnut/HNPByteSequence.h
+++ クラス内カテゴリ？の doxygen コマンドを修正したり。
+
++ include/hezelnut/HNPDependence.h:
+++ HNPDependence プロトコルを追加。要らない気もする…。
+
++ include/hezelnut/HNPPrintable.h:
+++ HNPPrintable プロトコルを追加。要らない気もする…。
+
++ include/hezelnut/HNPStreamable.h:
+++ HNPStreamable プロトコルを追加。要らない気もする…。
+
++ include/hezelnut/HNPString.h:
+++ クラス内カテゴリ？の doxygen コマンドを修正したり。
+
++ include/hezelnut/HNStream.h:
+++ HNStream クラスを追加。まだ書きかけ。
+
++ src/HNConstantString.m:
+++ クラス内カテゴリ？の doxygen コマンドを修正したり。
+++ ドキュメント用コメントのスタイルを変更、前のスタイルだったので。
+
++ src/HNObject.m:
+++ HNObject 実装部の追加。
+
++ src/HNStream.m:
+++ HNStream 実装部の追加。
+
++
+
+
+2011-11-23 18:29:02 +0900 ned rihine <ned.rihine@gmail.com>
+
+add HNPByteSequence protocol.
+
+
+
+2011-11-23 00:00:12 +0900 ned rihine <ned.rihine@gmail.com>
+
+add HNObject class.
+
+
+
+2011-11-22 23:04:14 +0900 ned rihine <ned.rihine@gmail.com>
+
+add automake files.
+
+
+
+2011-11-22 22:39:15 +0900 ned rihine <ned.rihine@gmail.com>
+
+first commit.
+
+
