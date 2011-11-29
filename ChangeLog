@@ -1,3 +1,31 @@
+2011-11-29 12:28:52 +0900 ned rihine <ned.rihine@gmail.com>
+
+* HNArrayedCollection 完成。
+
+** include/hezelnut/HNArrayedCollection.h:
+  - 続きを書いた。
+
+** include/hezelnut/HNBlockClosure.h:
+  - HNBlockClosure クラスの追加。
+
+** include/hezelnut/HNSequenceableCollection.h:
+  - HNSequenceableCollection クラスの追加。
+
+** include/hezelnut/hn_functor.h:
+  - 関数ポインタ型をいくつか追加。
+
+** src/HNArrayedCollection.m:
+  - s/start_index/start/g
+  - s/stop_index/stop/g
+  - 残りの実装の追加。
+
+** src/HNBlockClosure.m:
+  - HNBlockClosure 実装部の追加。
+
+** src/HNSequenceableCollection.m:
+  - HNSequenceableCollection 実装部の追加。
+
+
 2011-11-27 20:21:34 +0900 ned rihine <ned.rihine@gmail.com>
 
 *

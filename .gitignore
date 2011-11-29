@@ -6,16 +6,30 @@
 *.diff
 *.pidb
 *.sh
+*.rb
 *.o
-config.status
-stamp-h1
-bin/
-commit_message.tmp
+*.a
+*.dylib
+*.dll
+*.lib
+*.list
+.DS_Store
+
 Makefile
-atom4te.cache/*
-atom4te.cache/requests
-atom4te.cache/*.*
-configure
-src/.deps
-include/config.h
-documents/*/
+GNUMakefile
+
+# ./
+/atom4*.cache/
+/configure
+/config.status
+/commit_message.tmp
+/documents
+/TAGS
+
+# ./src
+/src/.deps
+
+# ./include
+/include/config.h
+/include/config.in
+/include/stamp-h1

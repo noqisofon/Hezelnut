@@ -95,13 +95,19 @@
 /*!
  * 
  */
-- (id) at: (int)an_index ifAbsent: a_block;
+- (id) at: (int)an_index ifAbsent: (HNFilterBlock *)a_block;
 #else
 /*!
  * 
  */
-- (id) at: (int)an_index ifAbsent: (HNFilterBlock *)a_block;
+- (id) at: (int)an_index ifAbsent: (hn_filter1_functor)a_block;
 #endif  /* def HEZELNUT_ENABLE_BLOCK */
+
+
+/*!
+ * 
+ */
+- (id) atAll:(HNCollection *)key_collection;
 
 /*! @} */
 @end
