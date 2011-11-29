@@ -19,7 +19,7 @@ Makefile
 GNUMakefile
 
 # ./
-/atom4*.cache/
+/autom4*.cache/
 /configure
 /config.status
 /commit_message.tmp
