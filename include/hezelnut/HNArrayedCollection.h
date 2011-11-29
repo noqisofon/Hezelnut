@@ -108,9 +108,160 @@
 
 
 /*!
- * 
+ * key_collection の要素をインデックス値として抜き出したコレクションを返します。
  */
 - (id) atAll: (id <HNPCollection>)key_collection;
+
+
+/*!
+ * レシーバの start 番目から stop 番目までを含んだコレクションを返します。
+ */
+- (id) copyFrom: (int)start to: (int)stop;
+
+
+/*!
+ * レシーバの全ての要素の後に an_element を追加したコレクションを作って返します。
+ */
+- (id) copyWith: (id)an_element;
+
+
+/*!
+ * レシーバの要素から、old_element 以外を含んだコレクションを返します。
+ */
+- (id) copyWithout: (id)old_element;
+/*! @} */
+
+
+/*! \name enumerating the elements of a collection
+  
+ */
+/*! @{ */
+#ifdef HEZELNUT_ENABLE_BLOCK
+/*!
+ * a_block で真が返された全ての要素を新しい HNArrayedCollection オブジェクトに格納して返します。
+ */
+- (id) select: a_block;
+
+
+/*!
+ * a_block で偽が返された全ての要素を新しい HNArrayedCollection オブジェクトに格納して返します。
+ */
+- (id) reject: a_block;
+
+
+/*!
+ * a_block をレシーバの全ての要素に適用します。
+ */
+- (id) collect: a_block;
+
+
+/*!
+ * 
+ */
+- (id) with: (id <HNPSeqeuenceable>)a_seqeuenceable_collection collect: a_block;
+#endif  /* def HEZELNUT_ENABLE_BLOCK */
+/*! @} */
+
+
+/*! \name copying collections
+  
+ */
+/*! @{ */
+/*!
+ * 
+ */
+- (id) copyReplaceFrom: (int)start to: (int)stop withObject: (id)an_object;
+
+
+/*!
+ * 
+ */
+- (id) copyReplaceAll: (id <HNPCollectable>)old_sub_collection with: (id <HNPCollectable>)new_sub_collection;
+
+
+/*!
+ * 
+ */
+- (id) reverse;
+/*! @} */
+
+
+/*! \name sorting
+  
+ */
+/*! @{ */
+/*!
+ * レシーバの要素を #<= を使ってソートした結果を返します。
+ */
+- (id) sorted;
+/*!
+ * レシーバの要素を a_block を使ってソートした結果を返します。
+ */
+- (id) sorted: (HNComparisonBlock)a_block;
+/*! @} */
+
+
+/*! \name storing
+  
+ */
+/*! @{ */
+/*!
+ * 
+ */
+- (id) storeOn: (id <HNPStreamable>)a_stream;
+/*! @} */
+
+
+/*! \name private
+  
+ */
+/*! @{ */
+/*!
+ * レシーバの空のコピーを作って返します。
+ */
+- (id) copyEmpty;
+
+
+/*!
+ * 配列の長さを伸ばします。
+ */
+- (id) grow;
+
+
+/*!
+ * 
+ */
+- (id) growBy: (ind)delta;
+
+
+/*!
+ * レシーバの new_size だけ伸ばしたコピーを返します。
+ */
+- (id) copyGrowTo: (int)new_size;
+/*! @} */
+
+
+/*! \name streams
+  
+ */
+/*! @{ */
+#ifdef HEZELNUT_HAVE_WRITE_STREAM
+/*!
+ * 
+ */
+- (HNWriteStream *)writeStream;
+#endif  /* def HEZELNUT_HAVE_WRITE_STREAM */
+/*! @} */
+
+
+/*! \name built ins
+  
+ */
+/*! @{ */
+/*!
+ * 
+ */
+- (int) size;
 /*! @} */
 @end
 

@@ -1,3 +1,41 @@
+2011-11-27 20:21:34 +0900 ned rihine <ned.rihine@gmail.com>
+
+*
+
+** include/hezelnut/HNArray.h:
+  - HNArray クラスの追加。
+
+** include/hezelnut/HNArrayedCollection.h:
+  - HNArrayedCollection クラスの追加。
+
+** include/hezelnut/HNClass.h:
+  - コメントの追加。
+  - 全部書いていない状態でとりあえずコンパイルするためのプリプロセッサの追加。
+  - メソッド equals, extend, ingeritShape, categoriesFor, subclass:... の追加。
+
+** include/hezelnut/HNNil.h:
+  - HNNil クラスの追加。
+
+** src/HNArray.m:
+  - HNArray クラス実装部の追加。
+
+** src/HNArrayedCollection.m:
+  - HNArrayedCollection クラス実装部の追加。
+
+** src/HNClass.m:
+  - 全部書いていない状態でとりあえずコンパイルするためのプリプロセッサの追加。
+  - 記述の誤りを修正。
+  - メソッドの実装 メソッド equals, extend, ingeritShape, categoriesFor, subclass:... の追加。
+
+** src/HNNil.m:
+  - HNNil クラス実装部の追加。
+
+** src/HNObject.m:
+  - クラス変数のつもりだった Dependencies, FinalizableObjects を @implementation 内にいれて変名。
+  - return 文の前の行を 1 行空けた。
+  - 記述の誤りを修正。
+
+
 2011-11-26 19:27:51 +0900 ned rihine <ned.rihine@gmail.com>
 
 * インデントの修正、他。

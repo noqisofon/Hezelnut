@@ -47,11 +47,12 @@ AR = ar
 ARFLAGS = cru
 libHezelnut_a_AR = $(AR) $(ARFLAGS)
 libHezelnut_a_LIBADD =
-am_libHezelnut_a_OBJECTS = HNArray.$(OBJEXT) HNClass.$(OBJEXT) \
-	HNConstantString.$(OBJEXT) HNObject.$(OBJEXT) \
-	HNStream.$(OBJEXT) HNBehavior.$(OBJEXT) \
-	HNClassDescription.$(OBJEXT) HNNil.$(OBJEXT) \
-	HNRandom.$(OBJEXT)
+am_libHezelnut_a_OBJECTS = HNArray.$(OBJEXT) \
+	HNArrayedCollection.$(OBJEXT) HNBehavior.$(OBJEXT) \
+	HNClass.$(OBJEXT) HNClassDescription.$(OBJEXT) \
+	HNConstantString.$(OBJEXT) HNNil.$(OBJEXT) HNObject.$(OBJEXT) \
+	HNRandom.$(OBJEXT) HNSequenceableCollection.$(OBJEXT) \
+	HNStream.$(OBJEXT)
 libHezelnut_a_OBJECTS = $(am_libHezelnut_a_OBJECTS)
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)/include
 depcomp = $(SHELL) $(top_srcdir)/depcomp
@@ -160,15 +161,17 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 noinst_LIBRARIES = libHezelnut.a
 libHezelnut_a_SOURCES = \
-	HNArray.m            \
-	HNClass.m            \
-	HNConstantString.m   \
-	HNObject.m           \
-	HNStream.m           \
-	HNBehavior.m         \
+	HNArray.m  \
+	HNArrayedCollection.m \
+	HNBehavior.m \
+	HNClass.m \
 	HNClassDescription.m \
-	HNNil.m              \
-	HNRandom.m
+	HNConstantString.m \
+	HNNil.m \
+	HNObject.m \
+	HNRandom.m \
+	HNSequenceableCollection.m \
+	HNStream.m
 
 all: all-am
 
@@ -219,6 +222,7 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/HNArray.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/HNArrayedCollection.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/HNBehavior.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/HNClass.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/HNClassDescription.Po@am__quote@
@@ -226,6 +230,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/HNNil.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/HNObject.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/HNRandom.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/HNSequenceableCollection.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/HNStream.Po@am__quote@
 
 .m.o:
