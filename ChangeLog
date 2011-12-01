@@ -1,3 +1,15 @@
+2011-11-29 15:20:52 +0900 ned rihine <ned.rihine@gmail.com>
+
+autom4.cache directory are ignore.
+
+
+
+2011-11-29 15:16:14 +0900 ned rihine <ned.rihine@gmail.com>
+
+add ignore list.
+
+
+
 2011-11-29 12:28:52 +0900 ned rihine <ned.rihine@gmail.com>
 
 * HNArrayedCollection 完成。

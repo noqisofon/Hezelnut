@@ -24,7 +24,7 @@
 
 
 #define     HN_RITERAL_EMPTY_ARRAY       [ HNArray empty ]
-#define     HN_RITERAL_ARRAY(item)       [ HNArray with: item ]
+#define     HN_RITERAL_ARRAY1(item)       [ HNArray with: item ]
 
 
 #endif  /* ndef Hezelnut_hn_riterals_h */
