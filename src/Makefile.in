@@ -48,11 +48,11 @@ ARFLAGS = cru
 libHezelnut_a_AR = $(AR) $(ARFLAGS)
 libHezelnut_a_LIBADD =
 am_libHezelnut_a_OBJECTS = HNArray.$(OBJEXT) \
-	HNArrayedCollection.$(OBJEXT) HNBehavior.$(OBJEXT) \
-	HNClass.$(OBJEXT) HNClassDescription.$(OBJEXT) \
-	HNConstantString.$(OBJEXT) HNNil.$(OBJEXT) HNObject.$(OBJEXT) \
-	HNRandom.$(OBJEXT) HNSequenceableCollection.$(OBJEXT) \
-	HNStream.$(OBJEXT)
+	HNSequenceableCollection.$(OBJEXT) HNClass.$(OBJEXT) \
+	HNArrayedCollection.$(OBJEXT) HNStream.$(OBJEXT) \
+	HNClassDescription.$(OBJEXT) HNObject.$(OBJEXT) \
+	HNBehavior.$(OBJEXT) HNBlockClosure.$(OBJEXT) \
+	HNConstantString.$(OBJEXT) HNRandom.$(OBJEXT) HNNil.$(OBJEXT)
 libHezelnut_a_OBJECTS = $(am_libHezelnut_a_OBJECTS)
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)/include
 depcomp = $(SHELL) $(top_srcdir)/depcomp
@@ -161,17 +161,18 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 noinst_LIBRARIES = libHezelnut.a
 libHezelnut_a_SOURCES = \
-	HNArray.m  \
-	HNArrayedCollection.m \
-	HNBehavior.m \
-	HNClass.m \
-	HNClassDescription.m \
-	HNConstantString.m \
-	HNNil.m \
-	HNObject.m \
-	HNRandom.m \
-	HNSequenceableCollection.m \
-	HNStream.m
+	./HNArray.m   \
+	./HNSequenceableCollection.m   \
+	./HNClass.m   \
+	./HNArrayedCollection.m   \
+	./HNStream.m   \
+	./HNClassDescription.m   \
+	./HNObject.m   \
+	./HNBehavior.m   \
+	./HNBlockClosure.m   \
+	./HNConstantString.m   \
+	./HNRandom.m   \
+	./HNNil.m
 
 all: all-am
 
@@ -224,6 +225,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/HNArray.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/HNArrayedCollection.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/HNBehavior.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/HNBlockClosure.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/HNClass.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/HNClassDescription.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/HNConstantString.Po@am__quote@
@@ -246,6 +248,174 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepOBJC_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepOBJC_FALSE@	DEPDIR=$(DEPDIR) $(OBJCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepOBJC_FALSE@	$(OBJCCOMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
+
+HNArray.o: ./HNArray.m
+@am__fastdepOBJC_TRUE@	$(OBJC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_OBJCFLAGS) $(OBJCFLAGS) -MT HNArray.o -MD -MP -MF $(DEPDIR)/HNArray.Tpo -c -o HNArray.o `test -f './HNArray.m' || echo '$(srcdir)/'`./HNArray.m
+@am__fastdepOBJC_TRUE@	$(am__mv) $(DEPDIR)/HNArray.Tpo $(DEPDIR)/HNArray.Po
+@AMDEP_TRUE@@am__fastdepOBJC_FALSE@	source='./HNArray.m' object='HNArray.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepOBJC_FALSE@	DEPDIR=$(DEPDIR) $(OBJCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepOBJC_FALSE@	$(OBJC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_OBJCFLAGS) $(OBJCFLAGS) -c -o HNArray.o `test -f './HNArray.m' || echo '$(srcdir)/'`./HNArray.m
+
+HNArray.obj: ./HNArray.m
+@am__fastdepOBJC_TRUE@	$(OBJC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_OBJCFLAGS) $(OBJCFLAGS) -MT HNArray.obj -MD -MP -MF $(DEPDIR)/HNArray.Tpo -c -o HNArray.obj `if test -f './HNArray.m'; then $(CYGPATH_W) './HNArray.m'; else $(CYGPATH_W) '$(srcdir)/./HNArray.m'; fi`
+@am__fastdepOBJC_TRUE@	$(am__mv) $(DEPDIR)/HNArray.Tpo $(DEPDIR)/HNArray.Po
+@AMDEP_TRUE@@am__fastdepOBJC_FALSE@	source='./HNArray.m' object='HNArray.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepOBJC_FALSE@	DEPDIR=$(DEPDIR) $(OBJCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepOBJC_FALSE@	$(OBJC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_OBJCFLAGS) $(OBJCFLAGS) -c -o HNArray.obj `if test -f './HNArray.m'; then $(CYGPATH_W) './HNArray.m'; else $(CYGPATH_W) '$(srcdir)/./HNArray.m'; fi`
+
+HNSequenceableCollection.o: ./HNSequenceableCollection.m
+@am__fastdepOBJC_TRUE@	$(OBJC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_OBJCFLAGS) $(OBJCFLAGS) -MT HNSequenceableCollection.o -MD -MP -MF $(DEPDIR)/HNSequenceableCollection.Tpo -c -o HNSequenceableCollection.o `test -f './HNSequenceableCollection.m' || echo '$(srcdir)/'`./HNSequenceableCollection.m
+@am__fastdepOBJC_TRUE@	$(am__mv) $(DEPDIR)/HNSequenceableCollection.Tpo $(DEPDIR)/HNSequenceableCollection.Po
+@AMDEP_TRUE@@am__fastdepOBJC_FALSE@	source='./HNSequenceableCollection.m' object='HNSequenceableCollection.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepOBJC_FALSE@	DEPDIR=$(DEPDIR) $(OBJCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepOBJC_FALSE@	$(OBJC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_OBJCFLAGS) $(OBJCFLAGS) -c -o HNSequenceableCollection.o `test -f './HNSequenceableCollection.m' || echo '$(srcdir)/'`./HNSequenceableCollection.m
+
+HNSequenceableCollection.obj: ./HNSequenceableCollection.m
+@am__fastdepOBJC_TRUE@	$(OBJC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_OBJCFLAGS) $(OBJCFLAGS) -MT HNSequenceableCollection.obj -MD -MP -MF $(DEPDIR)/HNSequenceableCollection.Tpo -c -o HNSequenceableCollection.obj `if test -f './HNSequenceableCollection.m'; then $(CYGPATH_W) './HNSequenceableCollection.m'; else $(CYGPATH_W) '$(srcdir)/./HNSequenceableCollection.m'; fi`
+@am__fastdepOBJC_TRUE@	$(am__mv) $(DEPDIR)/HNSequenceableCollection.Tpo $(DEPDIR)/HNSequenceableCollection.Po
+@AMDEP_TRUE@@am__fastdepOBJC_FALSE@	source='./HNSequenceableCollection.m' object='HNSequenceableCollection.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepOBJC_FALSE@	DEPDIR=$(DEPDIR) $(OBJCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepOBJC_FALSE@	$(OBJC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_OBJCFLAGS) $(OBJCFLAGS) -c -o HNSequenceableCollection.obj `if test -f './HNSequenceableCollection.m'; then $(CYGPATH_W) './HNSequenceableCollection.m'; else $(CYGPATH_W) '$(srcdir)/./HNSequenceableCollection.m'; fi`
+
+HNClass.o: ./HNClass.m
+@am__fastdepOBJC_TRUE@	$(OBJC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_OBJCFLAGS) $(OBJCFLAGS) -MT HNClass.o -MD -MP -MF $(DEPDIR)/HNClass.Tpo -c -o HNClass.o `test -f './HNClass.m' || echo '$(srcdir)/'`./HNClass.m
+@am__fastdepOBJC_TRUE@	$(am__mv) $(DEPDIR)/HNClass.Tpo $(DEPDIR)/HNClass.Po
+@AMDEP_TRUE@@am__fastdepOBJC_FALSE@	source='./HNClass.m' object='HNClass.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepOBJC_FALSE@	DEPDIR=$(DEPDIR) $(OBJCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepOBJC_FALSE@	$(OBJC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_OBJCFLAGS) $(OBJCFLAGS) -c -o HNClass.o `test -f './HNClass.m' || echo '$(srcdir)/'`./HNClass.m
+
+HNClass.obj: ./HNClass.m
+@am__fastdepOBJC_TRUE@	$(OBJC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_OBJCFLAGS) $(OBJCFLAGS) -MT HNClass.obj -MD -MP -MF $(DEPDIR)/HNClass.Tpo -c -o HNClass.obj `if test -f './HNClass.m'; then $(CYGPATH_W) './HNClass.m'; else $(CYGPATH_W) '$(srcdir)/./HNClass.m'; fi`
+@am__fastdepOBJC_TRUE@	$(am__mv) $(DEPDIR)/HNClass.Tpo $(DEPDIR)/HNClass.Po
+@AMDEP_TRUE@@am__fastdepOBJC_FALSE@	source='./HNClass.m' object='HNClass.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepOBJC_FALSE@	DEPDIR=$(DEPDIR) $(OBJCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepOBJC_FALSE@	$(OBJC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_OBJCFLAGS) $(OBJCFLAGS) -c -o HNClass.obj `if test -f './HNClass.m'; then $(CYGPATH_W) './HNClass.m'; else $(CYGPATH_W) '$(srcdir)/./HNClass.m'; fi`
+
+HNArrayedCollection.o: ./HNArrayedCollection.m
+@am__fastdepOBJC_TRUE@	$(OBJC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_OBJCFLAGS) $(OBJCFLAGS) -MT HNArrayedCollection.o -MD -MP -MF $(DEPDIR)/HNArrayedCollection.Tpo -c -o HNArrayedCollection.o `test -f './HNArrayedCollection.m' || echo '$(srcdir)/'`./HNArrayedCollection.m
+@am__fastdepOBJC_TRUE@	$(am__mv) $(DEPDIR)/HNArrayedCollection.Tpo $(DEPDIR)/HNArrayedCollection.Po
+@AMDEP_TRUE@@am__fastdepOBJC_FALSE@	source='./HNArrayedCollection.m' object='HNArrayedCollection.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepOBJC_FALSE@	DEPDIR=$(DEPDIR) $(OBJCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepOBJC_FALSE@	$(OBJC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_OBJCFLAGS) $(OBJCFLAGS) -c -o HNArrayedCollection.o `test -f './HNArrayedCollection.m' || echo '$(srcdir)/'`./HNArrayedCollection.m
+
+HNArrayedCollection.obj: ./HNArrayedCollection.m
+@am__fastdepOBJC_TRUE@	$(OBJC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_OBJCFLAGS) $(OBJCFLAGS) -MT HNArrayedCollection.obj -MD -MP -MF $(DEPDIR)/HNArrayedCollection.Tpo -c -o HNArrayedCollection.obj `if test -f './HNArrayedCollection.m'; then $(CYGPATH_W) './HNArrayedCollection.m'; else $(CYGPATH_W) '$(srcdir)/./HNArrayedCollection.m'; fi`
+@am__fastdepOBJC_TRUE@	$(am__mv) $(DEPDIR)/HNArrayedCollection.Tpo $(DEPDIR)/HNArrayedCollection.Po
+@AMDEP_TRUE@@am__fastdepOBJC_FALSE@	source='./HNArrayedCollection.m' object='HNArrayedCollection.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepOBJC_FALSE@	DEPDIR=$(DEPDIR) $(OBJCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepOBJC_FALSE@	$(OBJC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_OBJCFLAGS) $(OBJCFLAGS) -c -o HNArrayedCollection.obj `if test -f './HNArrayedCollection.m'; then $(CYGPATH_W) './HNArrayedCollection.m'; else $(CYGPATH_W) '$(srcdir)/./HNArrayedCollection.m'; fi`
+
+HNStream.o: ./HNStream.m
+@am__fastdepOBJC_TRUE@	$(OBJC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_OBJCFLAGS) $(OBJCFLAGS) -MT HNStream.o -MD -MP -MF $(DEPDIR)/HNStream.Tpo -c -o HNStream.o `test -f './HNStream.m' || echo '$(srcdir)/'`./HNStream.m
+@am__fastdepOBJC_TRUE@	$(am__mv) $(DEPDIR)/HNStream.Tpo $(DEPDIR)/HNStream.Po
+@AMDEP_TRUE@@am__fastdepOBJC_FALSE@	source='./HNStream.m' object='HNStream.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepOBJC_FALSE@	DEPDIR=$(DEPDIR) $(OBJCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepOBJC_FALSE@	$(OBJC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_OBJCFLAGS) $(OBJCFLAGS) -c -o HNStream.o `test -f './HNStream.m' || echo '$(srcdir)/'`./HNStream.m
+
+HNStream.obj: ./HNStream.m
+@am__fastdepOBJC_TRUE@	$(OBJC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_OBJCFLAGS) $(OBJCFLAGS) -MT HNStream.obj -MD -MP -MF $(DEPDIR)/HNStream.Tpo -c -o HNStream.obj `if test -f './HNStream.m'; then $(CYGPATH_W) './HNStream.m'; else $(CYGPATH_W) '$(srcdir)/./HNStream.m'; fi`
+@am__fastdepOBJC_TRUE@	$(am__mv) $(DEPDIR)/HNStream.Tpo $(DEPDIR)/HNStream.Po
+@AMDEP_TRUE@@am__fastdepOBJC_FALSE@	source='./HNStream.m' object='HNStream.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepOBJC_FALSE@	DEPDIR=$(DEPDIR) $(OBJCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepOBJC_FALSE@	$(OBJC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_OBJCFLAGS) $(OBJCFLAGS) -c -o HNStream.obj `if test -f './HNStream.m'; then $(CYGPATH_W) './HNStream.m'; else $(CYGPATH_W) '$(srcdir)/./HNStream.m'; fi`
+
+HNClassDescription.o: ./HNClassDescription.m
+@am__fastdepOBJC_TRUE@	$(OBJC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_OBJCFLAGS) $(OBJCFLAGS) -MT HNClassDescription.o -MD -MP -MF $(DEPDIR)/HNClassDescription.Tpo -c -o HNClassDescription.o `test -f './HNClassDescription.m' || echo '$(srcdir)/'`./HNClassDescription.m
+@am__fastdepOBJC_TRUE@	$(am__mv) $(DEPDIR)/HNClassDescription.Tpo $(DEPDIR)/HNClassDescription.Po
+@AMDEP_TRUE@@am__fastdepOBJC_FALSE@	source='./HNClassDescription.m' object='HNClassDescription.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepOBJC_FALSE@	DEPDIR=$(DEPDIR) $(OBJCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepOBJC_FALSE@	$(OBJC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_OBJCFLAGS) $(OBJCFLAGS) -c -o HNClassDescription.o `test -f './HNClassDescription.m' || echo '$(srcdir)/'`./HNClassDescription.m
+
+HNClassDescription.obj: ./HNClassDescription.m
+@am__fastdepOBJC_TRUE@	$(OBJC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_OBJCFLAGS) $(OBJCFLAGS) -MT HNClassDescription.obj -MD -MP -MF $(DEPDIR)/HNClassDescription.Tpo -c -o HNClassDescription.obj `if test -f './HNClassDescription.m'; then $(CYGPATH_W) './HNClassDescription.m'; else $(CYGPATH_W) '$(srcdir)/./HNClassDescription.m'; fi`
+@am__fastdepOBJC_TRUE@	$(am__mv) $(DEPDIR)/HNClassDescription.Tpo $(DEPDIR)/HNClassDescription.Po
+@AMDEP_TRUE@@am__fastdepOBJC_FALSE@	source='./HNClassDescription.m' object='HNClassDescription.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepOBJC_FALSE@	DEPDIR=$(DEPDIR) $(OBJCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepOBJC_FALSE@	$(OBJC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_OBJCFLAGS) $(OBJCFLAGS) -c -o HNClassDescription.obj `if test -f './HNClassDescription.m'; then $(CYGPATH_W) './HNClassDescription.m'; else $(CYGPATH_W) '$(srcdir)/./HNClassDescription.m'; fi`
+
+HNObject.o: ./HNObject.m
+@am__fastdepOBJC_TRUE@	$(OBJC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_OBJCFLAGS) $(OBJCFLAGS) -MT HNObject.o -MD -MP -MF $(DEPDIR)/HNObject.Tpo -c -o HNObject.o `test -f './HNObject.m' || echo '$(srcdir)/'`./HNObject.m
+@am__fastdepOBJC_TRUE@	$(am__mv) $(DEPDIR)/HNObject.Tpo $(DEPDIR)/HNObject.Po
+@AMDEP_TRUE@@am__fastdepOBJC_FALSE@	source='./HNObject.m' object='HNObject.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepOBJC_FALSE@	DEPDIR=$(DEPDIR) $(OBJCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepOBJC_FALSE@	$(OBJC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_OBJCFLAGS) $(OBJCFLAGS) -c -o HNObject.o `test -f './HNObject.m' || echo '$(srcdir)/'`./HNObject.m
+
+HNObject.obj: ./HNObject.m
+@am__fastdepOBJC_TRUE@	$(OBJC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_OBJCFLAGS) $(OBJCFLAGS) -MT HNObject.obj -MD -MP -MF $(DEPDIR)/HNObject.Tpo -c -o HNObject.obj `if test -f './HNObject.m'; then $(CYGPATH_W) './HNObject.m'; else $(CYGPATH_W) '$(srcdir)/./HNObject.m'; fi`
+@am__fastdepOBJC_TRUE@	$(am__mv) $(DEPDIR)/HNObject.Tpo $(DEPDIR)/HNObject.Po
+@AMDEP_TRUE@@am__fastdepOBJC_FALSE@	source='./HNObject.m' object='HNObject.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepOBJC_FALSE@	DEPDIR=$(DEPDIR) $(OBJCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepOBJC_FALSE@	$(OBJC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_OBJCFLAGS) $(OBJCFLAGS) -c -o HNObject.obj `if test -f './HNObject.m'; then $(CYGPATH_W) './HNObject.m'; else $(CYGPATH_W) '$(srcdir)/./HNObject.m'; fi`
+
+HNBehavior.o: ./HNBehavior.m
+@am__fastdepOBJC_TRUE@	$(OBJC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_OBJCFLAGS) $(OBJCFLAGS) -MT HNBehavior.o -MD -MP -MF $(DEPDIR)/HNBehavior.Tpo -c -o HNBehavior.o `test -f './HNBehavior.m' || echo '$(srcdir)/'`./HNBehavior.m
+@am__fastdepOBJC_TRUE@	$(am__mv) $(DEPDIR)/HNBehavior.Tpo $(DEPDIR)/HNBehavior.Po
+@AMDEP_TRUE@@am__fastdepOBJC_FALSE@	source='./HNBehavior.m' object='HNBehavior.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepOBJC_FALSE@	DEPDIR=$(DEPDIR) $(OBJCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepOBJC_FALSE@	$(OBJC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_OBJCFLAGS) $(OBJCFLAGS) -c -o HNBehavior.o `test -f './HNBehavior.m' || echo '$(srcdir)/'`./HNBehavior.m
+
+HNBehavior.obj: ./HNBehavior.m
+@am__fastdepOBJC_TRUE@	$(OBJC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_OBJCFLAGS) $(OBJCFLAGS) -MT HNBehavior.obj -MD -MP -MF $(DEPDIR)/HNBehavior.Tpo -c -o HNBehavior.obj `if test -f './HNBehavior.m'; then $(CYGPATH_W) './HNBehavior.m'; else $(CYGPATH_W) '$(srcdir)/./HNBehavior.m'; fi`
+@am__fastdepOBJC_TRUE@	$(am__mv) $(DEPDIR)/HNBehavior.Tpo $(DEPDIR)/HNBehavior.Po
+@AMDEP_TRUE@@am__fastdepOBJC_FALSE@	source='./HNBehavior.m' object='HNBehavior.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepOBJC_FALSE@	DEPDIR=$(DEPDIR) $(OBJCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepOBJC_FALSE@	$(OBJC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_OBJCFLAGS) $(OBJCFLAGS) -c -o HNBehavior.obj `if test -f './HNBehavior.m'; then $(CYGPATH_W) './HNBehavior.m'; else $(CYGPATH_W) '$(srcdir)/./HNBehavior.m'; fi`
+
+HNBlockClosure.o: ./HNBlockClosure.m
+@am__fastdepOBJC_TRUE@	$(OBJC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_OBJCFLAGS) $(OBJCFLAGS) -MT HNBlockClosure.o -MD -MP -MF $(DEPDIR)/HNBlockClosure.Tpo -c -o HNBlockClosure.o `test -f './HNBlockClosure.m' || echo '$(srcdir)/'`./HNBlockClosure.m
+@am__fastdepOBJC_TRUE@	$(am__mv) $(DEPDIR)/HNBlockClosure.Tpo $(DEPDIR)/HNBlockClosure.Po
+@AMDEP_TRUE@@am__fastdepOBJC_FALSE@	source='./HNBlockClosure.m' object='HNBlockClosure.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepOBJC_FALSE@	DEPDIR=$(DEPDIR) $(OBJCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepOBJC_FALSE@	$(OBJC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_OBJCFLAGS) $(OBJCFLAGS) -c -o HNBlockClosure.o `test -f './HNBlockClosure.m' || echo '$(srcdir)/'`./HNBlockClosure.m
+
+HNBlockClosure.obj: ./HNBlockClosure.m
+@am__fastdepOBJC_TRUE@	$(OBJC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_OBJCFLAGS) $(OBJCFLAGS) -MT HNBlockClosure.obj -MD -MP -MF $(DEPDIR)/HNBlockClosure.Tpo -c -o HNBlockClosure.obj `if test -f './HNBlockClosure.m'; then $(CYGPATH_W) './HNBlockClosure.m'; else $(CYGPATH_W) '$(srcdir)/./HNBlockClosure.m'; fi`
+@am__fastdepOBJC_TRUE@	$(am__mv) $(DEPDIR)/HNBlockClosure.Tpo $(DEPDIR)/HNBlockClosure.Po
+@AMDEP_TRUE@@am__fastdepOBJC_FALSE@	source='./HNBlockClosure.m' object='HNBlockClosure.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepOBJC_FALSE@	DEPDIR=$(DEPDIR) $(OBJCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepOBJC_FALSE@	$(OBJC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_OBJCFLAGS) $(OBJCFLAGS) -c -o HNBlockClosure.obj `if test -f './HNBlockClosure.m'; then $(CYGPATH_W) './HNBlockClosure.m'; else $(CYGPATH_W) '$(srcdir)/./HNBlockClosure.m'; fi`
+
+HNConstantString.o: ./HNConstantString.m
+@am__fastdepOBJC_TRUE@	$(OBJC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_OBJCFLAGS) $(OBJCFLAGS) -MT HNConstantString.o -MD -MP -MF $(DEPDIR)/HNConstantString.Tpo -c -o HNConstantString.o `test -f './HNConstantString.m' || echo '$(srcdir)/'`./HNConstantString.m
+@am__fastdepOBJC_TRUE@	$(am__mv) $(DEPDIR)/HNConstantString.Tpo $(DEPDIR)/HNConstantString.Po
+@AMDEP_TRUE@@am__fastdepOBJC_FALSE@	source='./HNConstantString.m' object='HNConstantString.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepOBJC_FALSE@	DEPDIR=$(DEPDIR) $(OBJCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepOBJC_FALSE@	$(OBJC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_OBJCFLAGS) $(OBJCFLAGS) -c -o HNConstantString.o `test -f './HNConstantString.m' || echo '$(srcdir)/'`./HNConstantString.m
+
+HNConstantString.obj: ./HNConstantString.m
+@am__fastdepOBJC_TRUE@	$(OBJC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_OBJCFLAGS) $(OBJCFLAGS) -MT HNConstantString.obj -MD -MP -MF $(DEPDIR)/HNConstantString.Tpo -c -o HNConstantString.obj `if test -f './HNConstantString.m'; then $(CYGPATH_W) './HNConstantString.m'; else $(CYGPATH_W) '$(srcdir)/./HNConstantString.m'; fi`
+@am__fastdepOBJC_TRUE@	$(am__mv) $(DEPDIR)/HNConstantString.Tpo $(DEPDIR)/HNConstantString.Po
+@AMDEP_TRUE@@am__fastdepOBJC_FALSE@	source='./HNConstantString.m' object='HNConstantString.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepOBJC_FALSE@	DEPDIR=$(DEPDIR) $(OBJCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepOBJC_FALSE@	$(OBJC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_OBJCFLAGS) $(OBJCFLAGS) -c -o HNConstantString.obj `if test -f './HNConstantString.m'; then $(CYGPATH_W) './HNConstantString.m'; else $(CYGPATH_W) '$(srcdir)/./HNConstantString.m'; fi`
+
+HNRandom.o: ./HNRandom.m
+@am__fastdepOBJC_TRUE@	$(OBJC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_OBJCFLAGS) $(OBJCFLAGS) -MT HNRandom.o -MD -MP -MF $(DEPDIR)/HNRandom.Tpo -c -o HNRandom.o `test -f './HNRandom.m' || echo '$(srcdir)/'`./HNRandom.m
+@am__fastdepOBJC_TRUE@	$(am__mv) $(DEPDIR)/HNRandom.Tpo $(DEPDIR)/HNRandom.Po
+@AMDEP_TRUE@@am__fastdepOBJC_FALSE@	source='./HNRandom.m' object='HNRandom.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepOBJC_FALSE@	DEPDIR=$(DEPDIR) $(OBJCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepOBJC_FALSE@	$(OBJC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_OBJCFLAGS) $(OBJCFLAGS) -c -o HNRandom.o `test -f './HNRandom.m' || echo '$(srcdir)/'`./HNRandom.m
+
+HNRandom.obj: ./HNRandom.m
+@am__fastdepOBJC_TRUE@	$(OBJC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_OBJCFLAGS) $(OBJCFLAGS) -MT HNRandom.obj -MD -MP -MF $(DEPDIR)/HNRandom.Tpo -c -o HNRandom.obj `if test -f './HNRandom.m'; then $(CYGPATH_W) './HNRandom.m'; else $(CYGPATH_W) '$(srcdir)/./HNRandom.m'; fi`
+@am__fastdepOBJC_TRUE@	$(am__mv) $(DEPDIR)/HNRandom.Tpo $(DEPDIR)/HNRandom.Po
+@AMDEP_TRUE@@am__fastdepOBJC_FALSE@	source='./HNRandom.m' object='HNRandom.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepOBJC_FALSE@	DEPDIR=$(DEPDIR) $(OBJCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepOBJC_FALSE@	$(OBJC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_OBJCFLAGS) $(OBJCFLAGS) -c -o HNRandom.obj `if test -f './HNRandom.m'; then $(CYGPATH_W) './HNRandom.m'; else $(CYGPATH_W) '$(srcdir)/./HNRandom.m'; fi`
+
+HNNil.o: ./HNNil.m
+@am__fastdepOBJC_TRUE@	$(OBJC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_OBJCFLAGS) $(OBJCFLAGS) -MT HNNil.o -MD -MP -MF $(DEPDIR)/HNNil.Tpo -c -o HNNil.o `test -f './HNNil.m' || echo '$(srcdir)/'`./HNNil.m
+@am__fastdepOBJC_TRUE@	$(am__mv) $(DEPDIR)/HNNil.Tpo $(DEPDIR)/HNNil.Po
+@AMDEP_TRUE@@am__fastdepOBJC_FALSE@	source='./HNNil.m' object='HNNil.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepOBJC_FALSE@	DEPDIR=$(DEPDIR) $(OBJCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepOBJC_FALSE@	$(OBJC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_OBJCFLAGS) $(OBJCFLAGS) -c -o HNNil.o `test -f './HNNil.m' || echo '$(srcdir)/'`./HNNil.m
+
+HNNil.obj: ./HNNil.m
+@am__fastdepOBJC_TRUE@	$(OBJC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_OBJCFLAGS) $(OBJCFLAGS) -MT HNNil.obj -MD -MP -MF $(DEPDIR)/HNNil.Tpo -c -o HNNil.obj `if test -f './HNNil.m'; then $(CYGPATH_W) './HNNil.m'; else $(CYGPATH_W) '$(srcdir)/./HNNil.m'; fi`
+@am__fastdepOBJC_TRUE@	$(am__mv) $(DEPDIR)/HNNil.Tpo $(DEPDIR)/HNNil.Po
+@AMDEP_TRUE@@am__fastdepOBJC_FALSE@	source='./HNNil.m' object='HNNil.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepOBJC_FALSE@	DEPDIR=$(DEPDIR) $(OBJCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepOBJC_FALSE@	$(OBJC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_OBJCFLAGS) $(OBJCFLAGS) -c -o HNNil.obj `if test -f './HNNil.m'; then $(CYGPATH_W) './HNNil.m'; else $(CYGPATH_W) '$(srcdir)/./HNNil.m'; fi`
 
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	list='$(SOURCES) $(HEADERS) $(LISP) $(TAGS_FILES)'; \

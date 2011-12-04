@@ -25,6 +25,12 @@
 #import <hezelnut/HNCollection.h>
 
 
+@class HNStream;
+@class HNWriteStream;
+@class HNReadStream;
+@class HNReadWriteStream;
+
+
 /*!
  * \interface HNSequenceableCollection HNSequenceableCollection.h
  * \since 2011-11-28
@@ -48,7 +54,7 @@
 /*!
  * 
  */
-- (id) examineOn: (id <HNPStreamable>)a_stream;
+- (id) examineOn: (HNStream *)a_stream;
 
 
 /*!
@@ -60,7 +66,7 @@
 /*!
  * 
  */
-- (BOOL) equals: (id <HNCollectable>)a_collection;
+- (BOOL) equals: (HNCollection *)a_collection;
 
 
 /*!
@@ -77,13 +83,13 @@
 /*!
  * 
  */
-- (BOOL) endsWith: (id <HNPSequenceable>)a_sequenceable_collection;
+- (BOOL) endsWith: (HNSequenceableCollection *)a_sequenceable_collection;
 
 
 /*!
  * 
  */
-- (BOOL) startsWith: (id <HNPSequenceable>)a_sequenceable_collection;
+- (BOOL) startsWith: (HNSequenceableCollection *)a_sequenceable_collection;
 /*! @} */
 
 
@@ -94,10 +100,10 @@
 /*!
  * 
  */
-#ifndef HEZELNUT_ENABLE_BLOCK
+#ifdef HEZELNUT_ENABLE_BLOCK
 - (id) at: (int)an_index ifAbsent: (HNFilterBlock *)a_block;
 #else
-- (id) at: (int)an_index ifAbsent: (hn_functor0)a_block;
+- (id) at: (int)an_index ifAbsent: (hn_filter0_functor)a_block;
 #endif  /* def HEZELNUT_ENABLE_BLOCK */
 
 
@@ -433,7 +439,7 @@
 #ifdef HEZELNUT_ENABLE_BLOCK
 //- (id) do: a_block separatedBy: separate_block;
 #else
-- (id) do: (hn_action1_functor)a_block separatedBy: (hn_action_functor)separate_block;
+- (id) do: (hn_action1_functor)a_block separatedBy: (hn_action0_functor)separate_block;
 #endif  /* def HEZELNUT_ENABLE_BLOCK */
 
 
@@ -453,7 +459,7 @@
 #ifdef HEZELNUT_ENABLE_BLOCK
 //- (id) fold: a_block;
 #else
-- (id) fold: (hn_binary_functor)a_block;
+- (id) fold: (hn_action2_functor)a_block;
 #endif  /* def HEZELNUT_ENABLE_BLOCK */
 
 

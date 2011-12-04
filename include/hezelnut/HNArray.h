@@ -45,11 +45,13 @@
   
  */
 /*! @{ */
-#ifdef HEZELNUT_ENABLE_BLOCK
 /*!
  * 
  */
+#ifdef HEZELNUT_ENABLE_BLOCK
 - (id) at: (int)an_index ifAbsent: a_block;
+#else
+- (id) at: (int)an_index ifAbsent: (hn_action0_functor)a_block;
 #endif  /* def HEZELNUT_ENABLE_BLOCK */
 
 

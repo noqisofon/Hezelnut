@@ -1,5 +1,5 @@
 //  
-//  hn_functor.h
+//  HNIteratable.h
 //  
 //  Auther:
 //       Ned Rihine <ned.rihine@gmail.com>
@@ -19,28 +19,35 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
-#ifndef Hezelnut_hn_functor_h
-#define Hezelnut_hn_functor_h
+#ifndef Hezelnut_HNIteratable_h
+#define Hezelnut_HNIteratable_h
 
-#import <objc/objc.h>
-
-
-typedef   void (*hn_action0_functor)();
-typedef   void (*hn_action1_functor)(id obj);
-typedef   void (*hn_action2_functor)(id obj0, id obj1);
-
-typedef   BOOL (*hn_predicate1_functor)(id obj);
-typedef   BOOL (*hn_predicate2_functor)(id left, id right);
-
-typedef   id (*hn_filter0_functor)();
-typedef   id (*hn_filter1_functor)(id obj);
-typedef   id (*hn_filter2_functor)(id obj0, id obj1);
+#import <hezelnut/HNObject.h>
 
 
-typedef   id (*hn_enumeration2_functor)(id each, int index);
+@class HNArray;
 
 
-#endif  /* Hezelnut_hn_functor_h */
+/*!
+ * \interface HNIteratable HNIteratable.h
+ * \since 2011-12-01
+ */
+@interface HNIteratable : HNObject
+/*! \name
+ */
+/*! @{ */
+/*!
+ * 
+ */
+/*! @} */
+@end
+
+
+
+#define    HEZELNUT_HAVE_COLLECTION    1
+
+
+#endif  /* Hezelnut_HNIteratable_h */
 // Local Variables:
 //   coding: utf-8
 //   mode: objc

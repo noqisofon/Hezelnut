@@ -19,7 +19,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // 
-#import <hezelnut/hezelnut.h>
+#import <hezelnut/hn_literals.h>
+#import <hezelnut/HNPStreamable.h>
 
 #ifdef HEZELNUT_HAVE_CLASS
 #   import <hezelnut/HNClass.h>
@@ -694,9 +695,19 @@ void hn_object_change_class_to(id self, HNBehavior* a_behavior) {
 
 
 #ifdef HEZELNUT_ENABLE_BLOCK
-- (id) checkIndexableBounds: (int)index ifAbsent: a_block {
-}
+//- (id) checkIndexableBounds: (int)index ifAbsent: a_block {
+#else
+- (id) checkIndexableBounds: (int)index ifAbsent: (hn_action0_function)a_block {
 #endif  /* def HEZELNUT_ENABLE_BLOCK */
+    if ( [ self isFixed ] )
+        [ HNNotIndexableError signalOn: self ];
+#ifdef HEZELNUT_ENABLE_BLOCK
+    return [ a_block value ];
+#else
+    return a_block();
+#endif  /* def HEZELNUT_ENABLE_BLOCK */
+}
+
 @end
 // Local Variables:
 //   coding: utf-8

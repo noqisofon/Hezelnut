@@ -25,6 +25,9 @@ GNUMakefile
 /commit_message.tmp
 /documents
 /TAGS
+/*.anjuta
+/TODO.tasks
+/.anjuta_sym_db.db
 
 # ./src
 /src/.deps

@@ -22,14 +22,12 @@
 #ifndef Hezelnut_HNObject_h
 #define Hezelnut_HNObject_h
 
-#import <hezelnut/hn_literals.h>
-#import <hezelnut/HNPStreamable.h>
-
 #import <objc/Object.h>
 
-#ifdef HEZELNUT_HAVE_CLASS
 @class HNClass;
-#endif  /* def HEZELNUT_HAVE_CLASS */
+@class HNCollection;
+@class HNStream;
+@class HNString;
 
 
 /*!
@@ -278,7 +276,7 @@
 /*!
  *
  */
-- (id <HNPString>) displayString;
+- (HNString *) displayString;
 
 
 /*!
@@ -306,7 +304,7 @@
 /*!
  * 
  */
-- (id <HNPString>) printString;
+- (HNString *) printString;
 
 
 /*!
@@ -319,7 +317,7 @@
 /*!
  * 
  */
-- (id <HNPString>) basicPrintOn: (id <HNPStreamable>)a_stream;
+- (HNString *) basicPrintOn: (HNStream *)a_stream;
 
 
 #ifdef HEZELNUT_HAVE_TRANSCRIPT
@@ -351,7 +349,7 @@
 /*!
  * 
  */
-- (id <HNPString>) storeString;
+- (HNString *) storeString;
 
 
 /*!
@@ -459,7 +457,7 @@
 /*!
  * レシーバを参照するオブジェクトの配列を返します。
  */
-- (id <HNPCollectable>) allOwners;
+- (HNCollection *) allOwners;
 
 
 #ifdef HEZELNUT_HAVE_BEHAVIOR
@@ -473,11 +471,13 @@
 #endif  /* def HEZELNUT_HAVE_BEHAVIOR */
 
 
-#ifdef HEZELNUT_ENABLE_BLOCK
 /*!
  * 
  */
-- (id) checkIndexableBounds: (int)index ifAbsent: a_block;
+#ifdef HEZELNUT_ENABLE_BLOCK
+//- (id) checkIndexableBounds: (int)index ifAbsent: a_block;
+#else
+- (id) checkIndexableBounds: (int)index ifAbsent: (hn_action0_functor)a_block;
 #endif  /* def HEZELNUT_ENABLE_BLOCK */
 /*! @} */
 @end

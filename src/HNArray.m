@@ -19,6 +19,9 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
+#import <objc/objc.h>
+
+#import <hezelnut/hn_functor.h>
 
 #import <hezelnut/HNArray.h>
 
@@ -31,6 +34,10 @@
 
 #ifdef HEZELNUT_ENABLE_BLOCK
 - (id) at: (int)an_index ifAbsent: a_block {
+    return [ self checkIndexableBounds: an_index ifAbsent: a_block ];
+}
+#else
+- (id) at: (int)an_index ifAbsent: (hn_action0_functor)a_block {
     return [ self checkIndexableBounds: an_index ifAbsent: a_block ];
 }
 #endif  /* def HEZELNUT_ENABLE_BLOCK */

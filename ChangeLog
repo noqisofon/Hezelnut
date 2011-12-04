@@ -1,3 +1,17 @@
+2011-12-01 16:37:13 +0900 ned rihine <ned.rihine@gmail.com>
+
+* HNSequenceableCollection の書き足し。
+
+** include/hezelnut/HNSequenceableCollection.h:
+  + at:, at:ifAbsent, atAll: などなどの追加。
+
+** include/hezelnut/hn_literals.h:
+  + s/HN_RITERAL_ARRAY/HN_RITERAL_ARRAY1/
+
+** src/HNSequenceableCollection.m:
+  + at:, at:ifAbsent, atAll: などなどの追加。
+
+
 2011-11-29 15:20:52 +0900 ned rihine <ned.rihine@gmail.com>
 
 autom4.cache directory are ignore.

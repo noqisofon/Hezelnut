@@ -20,6 +20,12 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
+#import <objc/NXConstStr.h>
+
+#import <hezelnut/hn_functor.h>
+
+#import <hezelnut/HNError.h>
+
 #import <hezelnut/HNSequenceableCollection.h>
 
 
@@ -39,7 +45,7 @@
     [ a_collection do: ^(id sub_coll) { [ new_inst addAll: sub_coll ]; } separatedBy: ^() { [ new_inst addAll: sep_collection ] } ];
 #else
     id it, each, sub_coll;
-    int size =  [ [ sep_collection size ] * [ a_collection size ] - 1 ];
+    int size =  [ sep_collection size ] * [ a_collection size ] - 1;
     {
         it = [ a_collection iterator ];
         for ( ; [ it finished ]; [ it next ] ) {
@@ -65,7 +71,7 @@
 }
 
 
-- (id) examineOn: (id <HNPStreamable>)a_stream {
+- (id) examineOn: (HNStream *)a_stream {
     int i, size;
     id inst_vars, object, output;
 #ifndef HEZELNUT_ENABLE_BLOCK
@@ -1052,7 +1058,7 @@
 #ifdef HEZELNUT_ENABLE_BLOCK
 //- (id) fold: binary_block {
 #else
-- (id) fold: (hn_binary_functor)binary_block {
+- (id) fold: (hn_action2_functor)binary_block {
 #endif  /* def HEZELNUT_ENABLE_BLOCK */
     id it, element;
     id result;

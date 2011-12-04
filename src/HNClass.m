@@ -33,6 +33,8 @@
 #   import <hezelnut/HNInvalidValueError.h>
 #endif  /* def HEZELNUT_HAVE_INVALID_VALUE_ERROR */
 
+#import <hezelnut/HNClass.h>
+
 
 @implementation HNClass
 #ifdef HEZELNUT_ENABLE_BLOCK

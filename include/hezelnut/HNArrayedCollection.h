@@ -25,6 +25,10 @@
 #import <hezelnut/HNSequenceableCollection.h>
 
 
+@class HNStream;
+@class HNWriteStream;
+
+
 /*!
  * \interface HNArrayedCollection HNArrayedCollection.h
  * \since 2011-11-27
@@ -77,17 +81,17 @@
 /*!
  * 
  */
-+ (id) withAll: (id <HNPCollectable>)a_collection;
++ (id) withAll: (HNCollection *)a_collection;
 
 
 /*!
  * 
  */
-+ (id) join: (id <HNPCollectable>)a_collection;
++ (id) join: (HNCollection *)a_collection;
 /*!
  * 
  */
-+ (id) join: (id <HNPCollectable>)a_collection separatedBy: (id <HNPCollectable>)sep_collection;
++ (id) join: (HNCollection *)a_collection separatedBy: (HNCollection *)sep_collection;
 /*! @} */
 
 
@@ -104,13 +108,13 @@
 /*!
  * レシーバと a_seqeuenceable_collection を結合した HNArrayedCollection オブジェクトを返します。
  */
-- (id) concat: (id <HNPSeqeuenceable>)a_seqeuenceable_collection;
+- (id) concat: (HNSequenceableCollection *)a_seqeuenceable_collection;
 
 
 /*!
  * key_collection の要素をインデックス値として抜き出したコレクションを返します。
  */
-- (id) atAll: (id <HNPCollection>)key_collection;
+- (id) atAll: (HNCollection *)key_collection;
 
 
 /*!
@@ -158,7 +162,7 @@
 /*!
  * 
  */
-- (id) with: (id <HNPSeqeuenceable>)a_seqeuenceable_collection collect: a_block;
+- (id) with: (HNSequenceableCollection *)a_seqeuenceable_collection collect: a_block;
 #endif  /* def HEZELNUT_ENABLE_BLOCK */
 /*! @} */
 
@@ -176,7 +180,7 @@
 /*!
  * 
  */
-- (id) copyReplaceAll: (id <HNPCollectable>)old_sub_collection with: (id <HNPCollectable>)new_sub_collection;
+- (id) copyReplaceAll: (HNCollection *)old_sub_collection with: (HNCollection *)new_sub_collection;
 
 
 /*!
@@ -197,7 +201,7 @@
 /*!
  * レシーバの要素を a_block を使ってソートした結果を返します。
  */
-- (id) sorted: (HNComparisonBlock)a_block;
+- (id) sorted: (hn_predicate2_functor)a_block;
 /*! @} */
 
 
@@ -208,7 +212,7 @@
 /*!
  * 
  */
-- (id) storeOn: (id <HNPStreamable>)a_stream;
+- (id) storeOn: (HNStream *)a_stream;
 /*! @} */
 
 
@@ -231,7 +235,7 @@
 /*!
  * 
  */
-- (id) growBy: (ind)delta;
+- (id) growBy: (int)delta;
 
 
 /*!

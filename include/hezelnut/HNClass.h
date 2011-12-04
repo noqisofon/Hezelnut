@@ -23,9 +23,12 @@
 #define Hezelnut_HNClass_h
 
 #import <objc/typedstream.h>
+#import <hezelnut/HNClassDescription.h>
 
 
-@class HNClassDescription;
+@class HNArray;
+@class HNString;
+@class HNEnvironment;
 
 
 /*!
@@ -55,7 +58,7 @@
 /*!
  * 
  */
-+ (id) allPoolDictionaries: (id <HNPCollectable>)list except: (id)in_white do: a_block;
++ (id) allPoolDictionaries: (HNCollection *)list except: (id)in_white do: a_block;
 #endif  /* def HEZELNUT_ENABLE_BLOCK */
 /*! @} */
 
@@ -78,7 +81,7 @@
 /*!
  * クラスの名前を返します。
  */
-- (id <HNPString>)name;
+- (HNString *)name;
 
 
 /*!
@@ -94,11 +97,11 @@
 /*!
  * このクラスのカテゴリを返します。
  */
-- (id <HNPString>) category;
+- (HNString *) category;
 /*!
  * このクラスのカテゴリを指定の文字列に変更します。
  */
-- (id) category: (id <HNPString>)a_string;
+- (id) category: (HNString *)a_string;
 
 
 /*!
@@ -110,37 +113,37 @@
 /*!
  * クラスの変数辞書に指定された名前のクラス変数を追加します。
  */
-- (id) addClassVarName: (id <HNPString>)a_string;
+- (id) addClassVarName: (HNString *)a_string;
 #ifdef HEZELNUT_ENABLE_BLOCK
 /*!
  * 
  */
-- (id) addClassVarName: (id <HNPString>)a_string value: a_block;
+- (id) addClassVarName: (HNString *)a_string value: a_block;
 #else
 /*!
  * 
  */
-- (id) addClassVarName: (id <HNPString>)a_string value: (id)a_object;
+- (id) addClassVarName: (HNString *)a_string value: (id)a_object;
 #endif  /* def HEZELNUT_ENABLE_BLOCK */
 
 
 /*!
  * 指定された名前に対応するクラス変数の値を返します。
  */
-- (id) bindingFor: (id <HNPString>)a_string;
+- (id) bindingFor: (HNString *)a_string;
 
 
 /*!
  * 指定された名前に対応するクラス変数を削除します。指定された名前のクラス変数が存在しない場合、エラーを送出します。
  */
-- (id) removeClassVarName: (id <HNPString>)a_string;
+- (id) removeClassVarName: (HNString *)a_string;
 
 
 #ifdef HEZELNUT_HAVE_BINDING_DICTIONARY
 /*!
  * クラス変数辞書を返します。
  */
-- (id <HNPDictionary>) classPool;
+- (HNDictionary *) classPool;
 #endif  /* def HEZELNUT_HAVE_BINDING_DICTIONARY */
 
 
@@ -160,13 +163,13 @@
 /*!
  * クラスのプール辞書に指定された共有プールを追加します？
  */
-- (id) addSharedPool: (id <HNPDictionary>)a_dictionary;
+- (id) addSharedPool: (HNDictionary *)a_dictionary;
 
 
 /*!
  * クラスで定義された共有プールを返します。
  */
-- (id <HNPSet>) sharedPool;
+- (HNSet) sharedPool;
 #endif  /* def HEZELNUT_HAVE_SET */
 
 
@@ -174,7 +177,7 @@
 /*!
  * このクラスのファイルアウトで書かれているプラグマを返します。
  */
-- (id <HNPIndexedCollection>) classPragmas;
+- (HNArray *) classPragmas;
 #endif  /* HEZELNUT_HAVE_ARRAY */
 
 
