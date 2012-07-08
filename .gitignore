@@ -15,8 +15,28 @@
 *.list
 .DS_Store
 
-Makefile
+compile
+config.guess
+config.sub
+config.status
+depcomp
+elisp-comp
+install-sh
+mdate-sh
+missing
+mkinstalldirs
+py-compile
+texinfo.tex
+ylwrap
+aclocal.m4
+libtool
+ltmain.sh
+configure
 GNUMakefile
+Makefile
+Makefile.in
+config.h.in
+*.pc
 
 # ./
 /autom4*.cache/
