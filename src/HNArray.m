@@ -33,11 +33,11 @@
 
 
 #ifdef HEZELNUT_ENABLE_BLOCK
-- (id) at: (int)an_index ifAbsent: a_block {
+- (id) at: (int)an_index ifAbsent: (HNBlock*) a_block {
     return [ self checkIndexableBounds: an_index ifAbsent: a_block ];
 }
 #else
-- (id) at: (int)an_index ifAbsent: (hn_action0_functor)a_block {
+- (id) at: (int)an_index ifAbsent: (hn_filter0_functor)a_block {
     return [ self checkIndexableBounds: an_index ifAbsent: a_block ];
 }
 #endif  /* def HEZELNUT_ENABLE_BLOCK */
@@ -131,6 +131,7 @@
             return [ object become: [ an_array at: index ] ];
         } ];
 #else
+    return self;
 #endif  /* def HEZELNUT_ENABLE_BLOCK */
 }
 

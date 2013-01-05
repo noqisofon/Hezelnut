@@ -1,8 +1,8 @@
 //  
-//  HNBlockClosure.h
+//  HNReadStream.m
 //  
 //  Auther:
-//       Ned Rihine <ned.rihine@gmail.com>
+//       ned rihine <ned.rihine@gmail.com>
 // 
 //  Copyright (c) 2011 rihine All rights reserved.
 // 
@@ -18,27 +18,23 @@
 // 
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-//
-#ifndef Hezelnut_HNBlockClosure_h
-#define Hezelnut_HNBlockClosure_h
+// 
 
-#import <hezelnut/HNObject.h>
+#import <hezelnut/HNReadStream.h>
 
 
-@interface HNBlockClosure : HNObject
-/*! \name private-instance creation
-  
- */
-/*! @{ */
-/*!
- * 
- */
-- (id) exceptionHandlerResetBlock;
-/*! @} */
+@implementation HNReadStream
++ (id) on: (HNCollection *)a_collection {
+return [ [ [ HNReadStream alloc ] initCollection: a_collection
+limit: [ a_collection size ] ]
+beReadOnly ];
+}
++ (id) on: (HNCollection *)a_collection from: (int)first_index to: (int)last_index {
+
+}
 @end
 
 
-#endif  /* Hezelnut_HNBlockClosure_h */
 // Local Variables:
 //   coding: utf-8
 //   mode: objc

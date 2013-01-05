@@ -87,7 +87,7 @@
 /*!
  * 
  */
-- (id) concat: (HNIterable *)an_iterable;
+- (id) concat: (HNIteratable *)an_iteratable;
 /*! @} */
 
 
@@ -123,7 +123,7 @@
 /*!
  * 
  */
-- (id) remove: (id)old_object ifAbsent: (hn_except_functor)an_exception_block;
+- (id) remove: (id)old_object ifAbsent: (hn_filter0_functor)an_exception_block;
 
 
 /*!
@@ -133,13 +133,13 @@
 /*!
  * 
  */
-- (id) removeAll: (HNCollection *)a_collection ifAbsent: (hn_except_functor)an_exception_block;
+- (id) removeAll: (HNCollection *)a_collection ifAbsent: (hn_filter0_functor)an_exception_block;
 
 
 /*!
  * 
  */
-- (id) removeAllSuchThat: (hn_selector_functor)a_block;
+- (id) removeAllSuchThat: (hn_enumeration1_functor)a_block;
 /*! @} */
 
 

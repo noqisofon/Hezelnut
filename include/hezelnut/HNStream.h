@@ -23,10 +23,15 @@
 #define hezelnut_HNPStream_h
 
 #import <hezelnut/HNObject.h>
-#import <hezelnut/HNPStreamable.h>
+//#import <hezelnut/HNPStreamable.h>
 
 
-@interface HNStream : HNObject < HNPStreamable >
+@class IOChannel;
+@class HNSequenceableCollection;
+@class HNString;
+
+
+@interface HNStream : HNObject /*< HNPStreamable >*/
 /*! \name instance creation
   
  */
@@ -49,20 +54,20 @@
 /*!
  * ストリームの元になったファイルを返します。
  */
-- (id <HNPIOChannel>) file;
+- (IOChannel *) file;
 #endif  /* def HEZELNUT_HAVE_IOCHANNEL */
 
 
 /*!
  * ストリームの元になったっぽい名前を返します？
  */
-- (id <HNPString>) name;
+- (id) name;
 
 
 /*!
  * "a stream" を返します。
  */
-- (id <HNPString>) localName;
+- (HNString *) localName;
 
 
 /*!
@@ -74,7 +79,7 @@
 /*!
  * 実装されていません。
  */
-- (id <HNPCollectable>) contents;
+- (HNSequenceableCollection *) contents;
 
 
 /*!
@@ -102,7 +107,7 @@
 /*!
  * ストリームの内容が a_collection と一致するなら真を返します。
  */
-- (BOOL) nextMatchAll: (id <HNCollectable>)a_collection;
+- (BOOL) nextMatchAll: (HNCollection *)a_collection;
 
 
 /*!
@@ -120,7 +125,7 @@
 /*!
  * a_collection の全ての要素を書き出します。
  */
-- (id) nextPutAll: (id <HNCollectable>)a_collection;
+- (id) nextPutAll: (HNCollection *)a_collection;
 
 
 /*!
@@ -147,7 +152,7 @@
 /*!
  * 
  */
-- (id <HNPCollectable>) nextAvailable: (int)an_integer;
+- (HNCollection *) nextAvailable: (int)an_integer;
 /*!
  * 
  */
@@ -155,7 +160,7 @@
 /*!
  *
  */
-- (int) nextAvailable: (int)an_integer into: (id <HNPCollectable>)a_collection statingAt: (int)pos;
+- (int) nextAvailable: (int)an_integer into: (HNCollection *)a_collection statingAt: (int)pos;
 
 
 #ifdef HEZELNUT_HAVE_OREDEREDCOLLECTION
@@ -222,7 +227,7 @@
 /*!
  * encoded_object を書き出します。
  */
-- (id) write: (id <HNPEncodedThing>)encoded_object;
+- (id) write: (id)encoded_object;
 /*! @} */
 
 

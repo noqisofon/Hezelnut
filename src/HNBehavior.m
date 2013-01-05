@@ -20,7 +20,16 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#import <hezelnut/HNPString.h>
+#import <hezelnut/hn_functor.h>
+#import <hezelnut/HNCollection.h>
+#import <hezelnut/HNOrderedCollection.h>
+#import <hezelnut/HNSet.h>
+#import <hezelnut/HNDictionary.h>
+#import <hezelnut/HNString.h>
+#import <hezelnut/HNSymbol.h>
+#import <hezelnut/HNError.h>
+#import <hezelnut/HNInvalidValueError.h>
+#import <hezelnut/NHNotFoundError.h>
 
 #import <hezelnut/HNBehavior.h>
 

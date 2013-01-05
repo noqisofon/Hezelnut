@@ -1,10 +1,10 @@
 //  
-//  HNBlockClosure.h
+//  HNIterator.h
 //  
 //  Auther:
 //       Ned Rihine <ned.rihine@gmail.com>
 // 
-//  Copyright (c) 2011 rihine All rights reserved.
+//  Copyright (c) 2011-2012 rihine All rights reserved.
 // 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -19,26 +19,37 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
-#ifndef Hezelnut_HNBlockClosure_h
-#define Hezelnut_HNBlockClosure_h
+#ifndef Hezelnut_HNIterator_h
+#define Hezelnut_HNIterator_h
 
 #import <hezelnut/HNObject.h>
 
 
-@interface HNBlockClosure : HNObject
-/*! \name private-instance creation
+@interface HNIterator : HNObject
+/*! \name 
   
  */
-/*! @{ */
 /*!
- * 
+ *
  */
-- (id) exceptionHandlerResetBlock;
+- (BOOL) finished;
+
+
+/*!
+ *
+ */
+- (id) next;
+
+
+/*!
+ *
+ */
+- (id) current;
 /*! @} */
 @end
 
 
-#endif  /* Hezelnut_HNBlockClosure_h */
+#endif  /* Hezelnut_HNIterator_h */
 // Local Variables:
 //   coding: utf-8
 //   mode: objc

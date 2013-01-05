@@ -20,6 +20,17 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
+#import <hezelnut/hn_functor.h>
+#import <hezelnut/HNCollection.h>
+#import <hezelnut/HNOrderedCollection.h>
+#import <hezelnut/HNSet.h>
+#import <hezelnut/HNDictionary.h>
+#import <hezelnut/HNString.h>
+#import <hezelnut/HNSymbol.h>
+#import <hezelnut/HNError.h>
+#import <hezelnut/HNInvalidValueError.h>
+#import <hezelnut/NHNotFoundError.h>
+
 #ifdef HEZELNUT_HAVE_IDENTITY_SET
 #   import <hezelnut/HNIdentitySet.h>
 #endif  /* def HEZELNUT_HAVE_IDENTITY_SET */
@@ -38,7 +49,7 @@
 
 @implementation HNClass
 #ifdef HEZELNUT_ENABLE_BLOCK
-+ (id) allPoolDictionaries: (id <HNPCollectable>)list except: (id)in_white do: a_block {
++ (id) allPoolDictionaries: (HNCollection *)list except: (id)in_white do: a_block {
     id white;
     HNIdentitySet* grey;
     HNOrderedCollection* order;
@@ -80,7 +91,7 @@
 }
 
 
-- (id <HNPString>)name { return name_; }
+- (HNString *)name { return name_; }
 
 
 - (id) environment { return environment_; }
@@ -99,8 +110,8 @@
 }
 
 
-- (id <HNPString>) category { return category_; }
-- (id) category: (id <HNPString>)a_string {
+- (HNString *) category { return category_; }
+- (id) category: (HNString *)a_string {
     category_ = a_string;
     return self;
 }
@@ -116,7 +127,7 @@
 }
 
 
-- (id) addClassVarName: (id <HNPString>)a_string {
+- (id) addClassVarName: (HNString *)a_string {
     id sym = [ a_string asClassPoolKey ];
 
     if ( ![ [ self classPool ] includesKey: sym ] )
@@ -126,24 +137,24 @@
 }
 
 #ifdef HEZELNUT_ENABLE_BLOCK
-- (id) addClassVarName: (id <HNPString>)a_string value: a_block {
+- (id) addClassVarName: (HNString *)a_string value: a_block {
   
 }
 #else
-- (id) addClassVarName: (id <HNPString>)a_string value: (id)a_object {
+- (id) addClassVarName: (HNString *)a_string value: (id)a_object {
     return [ [ [ self addClassVarName: a_string ] value: a_object ] yourself ];
 }
 #endif  /* def HEZELNUT_ENABLE_BLOCK */
 
 
-- (id) bindingFor: (id <HNPString>)a_string {
+- (id) bindingFor: (HNString *)a_string {
     id sym = [ a_string asClassPoolKey ];
 
     return [ [ self classPool ] associationAt: sym ];
 }
 
 
-- (id) removeClassVarName: (id <HNPString>)a_string {
+- (id) removeClassVarName: (HNString *)a_string {
     id sym = [ a_string asClassPoolKey ];
 
     if ( !( [ class_variables_ notNil ] && [ class_variables_ includesKey: sym ] ) )
@@ -161,7 +172,7 @@
 
 
 #ifdef HEZELNUT_HAVE_BINDING_DICTIONARY
-- (id <HNPDictionary>) classPool {
+- (HNDictionary *) classPool {
     if ( [ class_variables_ isNil ] )
         class_variables_ = [ [ HNBindingDictionary new ] environment: self ];
 
@@ -171,7 +182,7 @@
 
 
 #ifdef HEZELNUT_HAVE_SET
-- (id <HNPSet>) classVarNames {
+- (HNSet *) classVarNames {
     if ( [ class_variables_ notNil ] )
         return [ class_variables_ keys ];
     else
@@ -179,10 +190,10 @@
 }
 
 
-- (id <HNPSet>) allClassVarNames {
+- (HNSet *) allClassVarNames {
     id super_var_names = [ self classVarNames ];
 #   ifndef HEZELNUT_ENABLE_BLOCK
-    id it = [ [ self allSuperclasses ] allSuperclasssesIterator ];
+    id it = [ [ self allSuperclasses ] iterator ];
     id each;
     for ( ; [ it finished ]; [ it next ] ) {
         each = [ it current ];
@@ -197,7 +208,7 @@
 }
 
 
-- (id) addSharedPool: (id <HNPDictionary>)a_dictionary {
+- (id) addSharedPool: (HNDictionary *)a_dictionary {
     if ( shared_pools_ == nil )
         shared_pools_ = [ HNSet empty ];
     shared_pools_ = [ shared_pools_ copyWithout: a_dictionary ];
@@ -206,7 +217,7 @@
 }
 
 
-- (id <HNPSet>) sharedPool {
+- (HNSet *) sharedPool {
     id set = [ HNSet new ];
 #   ifndef HEZELNUT_ENABLE_BLOCK
     id it, each;
@@ -239,8 +250,6 @@
           + 次の要素があるかどうか調べる => finished
           + 次の要素に移る              => next
           + 現在の要素を返す            => current
-
-      
         */
         it = [ shared_pools_ associationsIterator ];
         for ( ; [ it finished ]; [ it next ] ) {
@@ -257,7 +266,7 @@
 
 
 #ifdef HEZELNUT_HAVE_ARRAY
-- (id <HNPIndexedCollection>) classPragmas {
+- (HNIndexableCollection *) classPragmas {
     return [ HNArray with: [ HNSymbol value: @"category" ]
                      with: [ HNSymbol value: @"comment" ] ];
 }
@@ -265,16 +274,21 @@
 
 
 - (id) initializeAsRootClass {
+#ifdef HEZELNUT_ENABLE_BLOCK
     [ self registerHandler: ^(id method, id ann) {
             [ method rewriteAsCCall: [ [ ann arguments ] at: 1 ] for: self ];
         }
       forPragma: [ HNSymbol value: @"cCall" ] ];
+#endif  /* def HEZELNUT_ENABLE_BLOCK */
+
+#ifdef HEZELNUT_ENABLE_BLOCK
     [ self registerHandler: ^(id method, id ann) {
             [ method rewriteAsCCall: [ [ ann arguments ] at: 1 ]
                           returning: [ [ ann arguments ] at: 2 ]
                                args: [ [ ann arguments ] at: 3 ] ];
         }
-      forPragma: [ HNSymbol value: @"cCall" ] ];];
+      forPragma: [ HNSymbol value: @"cCall" ] ];
+#endif  /* def HEZELNUT_ENABLE_BLOCK */
 }
 
 

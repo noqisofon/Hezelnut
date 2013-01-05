@@ -4,7 +4,7 @@
 //  Auther:
 //       Ned Rihine <ned.rihine@gmail.com>
 // 
-//  Copyright (c) 2011 rihine All rights reserved.
+//  Copyright (c) 2011-2012 rihine All rights reserved.
 // 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -19,12 +19,17 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
-
 #import <objc/NXConstStr.h>
 
 #import <hezelnut/hn_functor.h>
-
+#import <hezelnut/hn_literals.h>
 #import <hezelnut/HNError.h>
+#import <hezelnut/HNNotFoundError.h>
+#import <hezelnut/HNInvalidSizeError.h>
+#import <hezelnut/HNArgumentOutOfRangeError.h>
+#import <hezelnut/HNEmptyCollectionError.h>
+#import <hezelnut/HNIterator.h>
+#import <hezelnut/HNStream.h>
 
 #import <hezelnut/HNSequenceableCollection.h>
 
@@ -37,15 +42,17 @@
     if ( [ a_collection isEmpty ] )
         return [ self new: 0 ];
 #ifdef HEZELNUT_ENABLE_BLOCK
-    new_inst = [ self new:
-                          [ a_collection inject: [ sep_collection size ] * [ a_collection size ] - 1 ]
+    new_inst = [ self new: [ a_collection inject: [ sep_collection size ] * [ a_collection size ] - 1 ]
                      into: ^(int size, id each) { return size + [ each size ]; }
     ];
 
     [ a_collection do: ^(id sub_coll) { [ new_inst addAll: sub_coll ]; } separatedBy: ^() { [ new_inst addAll: sep_collection ] } ];
 #else
-    id it, each, sub_coll;
-    int size =  [ sep_collection size ] * [ a_collection size ] - 1;
+    id it;
+    id each;
+    id sub_coll;
+
+    int size =  [ sep_collection size ] * ( [ a_collection size ] - 1 );
     {
         it = [ a_collection iterator ];
         for ( ; [ it finished ]; [ it next ] ) {
@@ -86,6 +93,7 @@
     size = [ inst_vars size ];
     for ( i = 0; i < size; ++ i ) {
         object = [ self instVarAt: i ];
+#ifdef HEZELNUT_ENABLE_OBJC_EXCEPTIONS
         @try {
             output = [ object printString ];
         } @catch ( HNError* err ) {
@@ -93,11 +101,14 @@
                                             : [ [ object class ] article ],
                                       [ [ [ object class ] name ] asString ] ] ];
         }
-        [ [ [  [ a_stream
-                 nextPutAll: @"  " ]
-              nextPutAll: [ inst_vars at: i ]
-              nextPutAll: @": " ]
-            nextPutAll: output ]
+#else
+        output = [ object printString ];
+#endif  /* def HEZELNUT_ENABLE_OBJC_EXCEPTIONS */
+        [ [ [ [ a_stream
+                   nextPutAll: @"  " ]
+                nextPutAll: [ inst_vars at: i ]
+                nextPutAll: @": " ]
+              nextPutAll: output ]
             nl ];
     }
     [ [ a_stream
@@ -105,14 +116,18 @@
         nl ];
 #ifdef HEZELNUT_ENABLE_BLOCK
     [ self keysAndValuesDo: ^(id key, id obj) {
-            id outout;
+            id output;
+#    ifdef HEZELNUT_ENABLE_OBJC_EXCEPTIONS
             @try {
-                outout = [ obj printString ];
+                output = [ obj printString ];
             } @catch ( HNError* err ) {
                 [ err returns: [ HNString format: @"%1 %2"
-                                            : [ [ object class ] article ],
-                                      [ [ [ object class ] name ] asString ] ] ];
+                                                : [ [ object class ] article ],
+                                          [ [ [ object class ] name ] asString ] ] ];
             }
+#    else
+            output = [ obj printString ];
+#    endif  /* def HEZELNUT_ENABLE_OBJC_EXCEPTIONS */
 
             [ [ [ [ [ a_stream
                         nextPutAll: @"   [" ]
@@ -128,20 +143,22 @@
         it = [ self associationIterator ];
         for ( ; [ it finished ]; [ it next ] ) {
             key = [ it currentKey ]; obj = [ it currentValue ];
-
+#    ifdef HEZELNUT_ENABLE_OBJC_EXCEPTIONS
             @try {
-                temp_outout = [ obj printString ];
+                temp_output = [ obj printString ];
             } @catch ( HNError* err ) {
                 [ err returns: [ HNString format: @"%1 %2"
                                                 : [ [ object class ] article ],
                                           [ [ [ object class ] name ] asString ] ] ];
             }
-
+#    else
+            temp_output = [ obj printString ];
+#    endif  /* def HEZELNUT_ENABLE_OBJC_EXCEPTIONS */
             [ [ [ [ [ a_stream
                         nextPutAll: @"   [" ]
                       print: i ]
                     nextPutAll: @"]: " ]
-                  nextPutAll: temp_outout ]
+                  nextPutAll: temp_output ]
                 nl ];
         }
     }
@@ -155,7 +172,7 @@
 - (BOOL) isSequenceable { return YES; }
 
 
-- (BOOL) equals: (id <HNCollectable>)a_collection {
+- (BOOL) equals: (HNCollection *)a_collection {
     int i, size;
     if ( [ self class ] != [ a_collection class ] )
         return NO;
@@ -173,7 +190,7 @@
 
 - (int) hash {
     int hash = [ self size ];
-    BOOL carray;
+    BOOL carry;
 #ifdef HEZELNUT_ENABLE_BLOCK
     [ self do: ^(id element) {
                 carry = (hash & 536870912) > 0;
@@ -203,25 +220,23 @@
 }
 
 
-- (BOOL) endsWith: (id <HNPSequenceable>)a_sequenceable_collection {
+- (BOOL) endsWith: (HNSequenceableCollection *)a_sequenceable_collection {
     int delta = [ self size ] - [ a_sequenceable_collection size ];
     BOOL result = YES;
 #ifndef HEZELNUT_ENABLE_BLOCK
     int i;
     id it, each;
 #endif  /* def HEZELNUT_ENABLE_BLOCK */
-    if ( delta >= 0 )
-        /* nothing!! */
-    else
+    if ( !( delta >= 0 ) )
         return NO;
 #ifdef HEZELNUT_ENABLE_BLOCK
     [ a_sequenceable_collection keyAndValuesDo: ^(int i, id each) {
             if ( [ self at: i + delta ] != each ) {
                 result = NO;
                 /*
-                  Smalltalk ではブロック内の return は呼び出し元のコンテキスト上にあるようですが、多
-                  くの C 言語系列の言語はそうではありません。
-                 */
+                  Smalltalk ではブロック内の return は呼び出し元のコンテキスト上にあるようですが、
+                  多くの C 言語系列の言語はそうではありません。
+                */
                 return HN_BREAK;  // HN_BREAK が返るとそれ以降の要素列挙を已めます。
             }
             return HN_CONTINUE;
@@ -246,12 +261,15 @@
 }
 
 
-- (BOOL) startsWith: (id <HNPSequenceable>)a_sequenceable_collection {
+- (BOOL) startsWith: (HNSequenceableCollection *)a_sequenceable_collection {
     BOOL result = YES;
+#ifndef HEZELNUT_ENABLE_BLOCK
+    int i;
+    HNIterator* it;
+    id each;
+#endif  /* ndef HEZELNUT_ENABLE_BLOCK */
 
-    if ( [ self size ] >= [ a_sequenceable_collection size ] )
-        /* nothing!! */
-    else
+    if ( !( [ self size ] >= [ a_sequenceable_collection size ] ) )
         return NO;
 #ifdef HEZELNUT_ENABLE_BLOCK
     [ a_sequenceable_collection keyAndValuesDo: ^(int i, id each) {
@@ -264,9 +282,9 @@
         } ];
 #else
     {
-        i = 0;
         it = [ a_sequenceable_collection iterator ];
-        for ( ; [ it finished ]; [ it next ] ) {
+        for ( i = 0; [ it finished ]; [ it next ] ) {
+            each = [ it current ];
             if ( [ [ self at: i ] equals: each ] ) {
                 result = NO;
 
@@ -282,11 +300,9 @@
 #ifdef HEZELNUT_ENABLE_BLOCK
 - (id) at: (int)an_index ifAbsent: (HNFilterBlock *)a_block;
 #else
-- (id) at: (int)an_index ifAbsent: (hn_functor0)a_block {
+- (id) at: (int)an_index ifAbsent: (hn_filter0_functor)a_block {
 #endif  /* ndef HEZELNUT_ENABLE_BLOCK */
-    if ( 0 <= an_index && an_index <= [ self size ] )
-        /* nothing!! */
-    else {
+    if ( !( 0 <= an_index && an_index <= [ self size ] ) ) {
 #ifdef HEZELNUT_ENABLE_BLOCK
         return [ a_block value ];
 #else
@@ -318,11 +334,12 @@
 }
 
 
-- (id) atAll:(HNCollection *)a_collection put: (id)an_object {
+- (id) atAll:(HNCollection *)key_collection put: (id)an_object {
 #ifdef HEZELNUT_ENABLE_BLOCK
     [ a_collection do: ^(id index) { [ self at: [ index asInt32 ] put: an_object ]; } ];
 #else
-    id it, index;
+    id it;
+    int index;
 
     it = [ key_collection iterator ];
     for ( ; [ it finished ]; [ it next ] ) {
@@ -347,7 +364,7 @@
     [ self at: 3 put: an_object ]; to = 4;
     /*
       それ以上なら while を遣います。
-     */
+    */
     while ( size > to ) {
         to += to;
         [ self replaceFrom: to + 1
@@ -435,14 +452,14 @@
 - (int) indexOfSubCollection: (HNCollection *)a_sub_collection {
 #ifdef HEZELNUT_ENABLE_BLOCK
     return [ self
-               indexOfSubCollection: a_sub_collection
-                         startingAt: 0
-                           ifAbsent: ^() { return -1; } ];
+             indexOfSubCollection: a_sub_collection
+                       startingAt: 0
+                         ifAbsent: ^() { return -1; } ];
 #else
     return [ self
-               indexOfSubCollection: a_sub_collection
-                         startingAt: 0
-                           ifAbsent: NULL ];
+             indexOfSubCollection: a_sub_collection
+                       startingAt: 0
+                         ifAbsent: NULL ];
 #endif  /* def HEZELNUT_ENABLE_BLOCK */
 }
 #ifdef HEZELNUT_ENABLE_BLOCK
@@ -451,27 +468,28 @@
 - (int) indexOfSubCollection: (HNCollection *)a_sub_collection ifAbsent: (hn_filter0_functor)exception_block {
 #endif  /* def HEZELNUT_ENABLE_BLOCK */
     return [ self
-               indexOfSubCollection: a_sub_collection
-                         startingAt: 0
-                           ifAbsent: exception_block ];
+             indexOfSubCollection: a_sub_collection
+                       startingAt: 0
+                         ifAbsent: exception_block ];
 }
 - (int) indexOfSubCollection: (HNCollection *)a_sub_collection startingAt: (int)an_index {
 #ifdef HEZELNUT_ENABLE_BLOCK
     return [ self
-               indexOfSubCollection: a_sub_collection
-                         startingAt: an_index
-                           ifAbsent: ^() { return -1; } ];
+             indexOfSubCollection: a_sub_collection
+                       startingAt: an_index
+                         ifAbsent: ^() { return -1; } ];
 #else
     return [ self
-               indexOfSubCollection: a_sub_collection
-                         startingAt: an_index
-                           ifAbsent: NULL ];
+             indexOfSubCollection: a_sub_collection
+                       startingAt: an_index
+                         ifAbsent: NULL ];
 #endif  /* def HEZELNUT_ENABLE_BLOCK */
 }
 #ifdef HEZELNUT_ENABLE_BLOCK
 #else
-- (int) indexOfSubCollection: (HNCollection *)a_sub_collection startingAt: (int)an_index ifAbsent: (hn_functor0)exception_block {
+- (int) indexOfSubCollection: (HNCollection *)a_sub_collection startingAt: (int)an_index ifAbsent: (hn_filter0_functor)exception_block {
 #endif  /* def HEZELNUT_ENABLE_BLOCK */
+    int index;
     int self_size,
         sub_size;
     int temp_size;
@@ -503,27 +521,27 @@
 - (int) indexOf: (id)an_element {
 #ifdef HEZELNUT_ENABLE_BLOCK
     return [ self
-               indexOf: an_element
-             statingAt: 0
-              ifAbsent: ^() { return 0; } ];
+             indexOf: an_element
+               statingAt: 0
+               ifAbsent: ^() { return 0; } ];
 #else
     return [ self
-               indexOf: an_element
-             statingAt: 0
-              ifAbsent: NULL ];
+             indexOf: an_element
+               statingAt: 0
+               ifAbsent: NULL ];
 #endif  /* def HEZELNUT_ENABLE_BLOCK */
 }
 - (int) indexOf: (id)an_element startingAt: (int)an_index {
 #ifdef HEZELNUT_ENABLE_BLOCK
     return [ self
-               indexOf: an_element
-             statingAt: an_index
-              ifAbsent: ^() { return -1; } ];
+             indexOf: an_element
+               statingAt: an_index
+               ifAbsent: ^() { return -1; } ];
 #else
     return [ self
-               indexOf: an_element
-             statingAt: an_index
-              ifAbsent: NULL ];
+             indexOf: an_element
+               statingAt: an_index
+               ifAbsent: NULL ];
 #endif  /* def HEZELNUT_ENABLE_BLOCK */
 }
 #ifdef HEZELNUT_ENABLE_BLOCK
@@ -532,9 +550,9 @@
 - (int) indexOf: (id)an_element ifAbsent: (hn_filter0_functor)exception_block {
 #endif  /* def HEZELNUT_ENABLE_BLOCK */
     return [ self
-               indexOf: an_element
-             statingAt: 0
-              ifAbsent: exception_block ];
+             indexOf: an_element
+               statingAt: 0
+               ifAbsent: exception_block ];
 }
 #ifdef HEZELNUT_ENABLE_BLOCK
 //- (int) indexOf: (id)an_element startingAt: (int)an_index ifAbsent: (hn_filter0_functor)exception_block {
@@ -593,27 +611,27 @@
 - (int) identityIndexOf: (id)an_element {
 #ifdef HEZELNUT_ENABLE_BLOCK
     return [ self
-               identityIndexOf: an_element
-             statingAt: 0
-              ifAbsent: ^() { return -1; } ];
+             identityIndexOf: an_element
+                   statingAt: 0
+                    ifAbsent: ^() { return -1; } ];
 #else
     return [ self
-               identityIndexOf: an_element
-             statingAt: 0
-              ifAbsent: NULL ];
+             identityIndexOf: an_element
+                   statingAt: 0
+                    ifAbsent: NULL ];
 #endif  /* def HEZELNUT_ENABLE_BLOCK */
 }
 - (int) identityIndexOf: (id)an_element startingAt: (int)an_index {
 #ifdef HEZELNUT_ENABLE_BLOCK
     return [ self
-               identityIndexOf: an_element
-             statingAt: an_index
-              ifAbsent: ^() { return 0; } ];
+             identityIndexOf: an_element
+                   statingAt: an_index
+                    ifAbsent: ^() { return 0; } ];
 #else
     return [ self
-               identityIndexOf: an_element
-             statingAt: an_index
-              ifAbsent: NULL ];
+             identityIndexOf: an_element
+                   statingAt: an_index
+                    ifAbsent: NULL ];
 #endif  /* def HEZELNUT_ENABLE_BLOCK */
 }
 #ifdef HEZELNUT_ENABLE_BLOCK
@@ -725,8 +743,7 @@
     int min_stop = start - 1,
         max_stop = HN_MIN( [ self size ], min_stop + [ replacement_collection size ]);
 
-    if ( min_stop <= stop && stop <= max_stop )
-    else {
+    if ( !( min_stop <= stop && stop <= max_stop ) ) {
         [ HNArgumentOutOfRangeError signalOn: stop
                                mustBeBetween: min_stop
                                          and: max_stop ];
@@ -749,7 +766,7 @@
 #ifdef HEZELNUT_ENABLE_BLOCK
     return [ self copyFrom: [ self indexOf: an_object ifAbsent: ^() { return [ self size ]; } ] ];
 #else
-    return [ self copyFrom: [ self indexOf: an_object ifAbsent: [ self size ]; ] ];
+    return [ self copyFrom: [ self indexOf: an_object ifAbsent: [ self size ] ] ];
 #endif  /* def HEZELNUT_ENABLE_BLOCK */
 }
 
@@ -758,7 +775,7 @@
 #ifdef HEZELNUT_ENABLE_BLOCK
     return [ self copyFrom: [ self indexOfLast: an_object ifAbsent: ^() { return [ self size ]; } ] ];
 #else
-    return [ self copyFrom: [ self indexOfLast: an_object ifAbsent: [ self size ]; ] ];
+    return [ self copyFrom: [ self indexOfLast: an_object ifAbsent: [ self size ] ] ];
 #endif  /* def HEZELNUT_ENABLE_BLOCK */
 }
 
@@ -769,19 +786,19 @@
 #ifdef HEZELNUT_ENABLE_BLOCK
                                   ifAbsent: ^() { return [ self size ]; }
 #else
-                                  ifAbsent: [ self size ]
+          ifAbsent: [ self size ]
 #endif  /* def HEZELNUT_ENABLE_BLOCK */
                         ] - 1 ];
 }
 
 
 - (id) copyUpToLast: (id)an_object {
-        return [ self copyFrom: 0
+    return [ self copyFrom: 0
                         to: [ self indexOfLast: an_object
 #ifdef HEZELNUT_ENABLE_BLOCK
-                                  ifAbsent: ^() { return [ self size ]; }
+                                      ifAbsent: ^() { return [ self size ]; }
 #else
-                                  ifAbsent: [ self size ]
+          ifAbsent: [ self size ]
 #endif  /* def HEZELNUT_ENABLE_BLOCK */
                         ] - 1 ];
 }
@@ -802,8 +819,8 @@
     }
     if ( stop >= start )
         return [ [ [ self copy ]
-                     atAll: HN_RITERAL_RANGE( start, stop )
-                       put: an_object ]
+                   atAll: HN_RITERAL_RANGE( start, stop )
+                     put: an_object ]
                    yourself ];
     new_size = [ self size ] - ( stop - start );
     result = [ self copyEmpty: new_size ];
@@ -828,7 +845,7 @@
                     [ result add: each ];
                 } ];
 #else
-        size = [ self size ];
+        //self_size = [ self size ];
         it = [ self iteratorFrom: stop + 1 ];
         for ( ; [ it finished ]; [ it next ] ) {
             each = [ it current ];
@@ -892,8 +909,8 @@
     id it, each;
 #endif  /* ndef HEZELNUT_ENABLE_BLOCK */
     while ( ( index = [ self
-                          indexOfSubCollection: old_sub_collection
-                                    startingAt: old_start ] ) != -1 ) {
+                        indexOfSubCollection: old_sub_collection
+                                  startingAt: old_start ] ) != -1 ) {
         copy_size = index - old_start;
 #ifdef HEZELNUT_ENABLE_BLOCK
         [ self from: old_start
@@ -948,11 +965,11 @@
     if ( start > 0 ) {
 #ifdef HEZELNUT_ENABLE_BLOCK
         [ self
-            from: 0
-              to: start
-              do: ^(id each) { [ result add: each ]; } ];
+          from: 0
+            to: start
+            do: ^(id each) { [ result add: each ]; } ];
 #else
-        it = [ iteratorFrom: 0 to: start ];
+        it = [ self iteratorFrom: 0 to: start ];
 
         for ( ; [ it finished ]; [ it next ] ) {
             each = [ it current ];
@@ -1014,7 +1031,7 @@
 #ifdef HEZELNUT_ENABLE_BLOCK
 //- (id) do: a_block separatedBy: separate_block;
 #else
-- (id) do: (hn_action1_functor)a_block separatedBy: (hn_action_functor)separate_block {
+- (id) do: (hn_action1_functor)a_block separatedBy: (hn_action0_functor)separate_block {
 #endif  /* def HEZELNUT_ENABLE_BLOCK */
     int i,
         size = [ self size ];
@@ -1058,7 +1075,7 @@
 #ifdef HEZELNUT_ENABLE_BLOCK
 //- (id) fold: binary_block {
 #else
-- (id) fold: (hn_action2_functor)binary_block {
+- (id) fold: (hn_filter2_functor)binary_block {
 #endif  /* def HEZELNUT_ENABLE_BLOCK */
     id it, element;
     id result;

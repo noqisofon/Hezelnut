@@ -18,7 +18,8 @@
 // 
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-//  
+//
+#import <hezelnut/hn_functor.h>
 
 #import <hezelnut/HNCollection.h>
 
@@ -137,7 +138,7 @@
 }
 
 
-- (id) removeAllSuchThat: (hn_selector_functor)a_block {
+- (id) removeAllSuchThat: (hn_enumeration1_functor)a_block {
     [ self removeAll: [ self select: a_block ] ifAbsent: NIL ];
 }
 

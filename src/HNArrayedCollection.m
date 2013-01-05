@@ -19,7 +19,16 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
+#import <hezelnut/hn_functor.h>
 
+#import <hezelnut/HNSequenceableCollection.h>
+#import <hezelnut/HNStream.h>
+#import <hezelnut/HNReadStream.h>
+#import <hezelnut/HNWriteStream.h>
+#import <hezelnut/HNReadWriteStream.h>
+
+#import <hezelnut/HNError.h>
+#import <hezelnut/HNArgumentOutOfRangeError.h>
 
 #import <hezelnut/HNArrayedCollection.h>
 
@@ -35,7 +44,7 @@
  * 
  */
 + (id) streamContents: a_block {
-    id stream = [ ReadWriteStream on: [ self new: 10 ] ];
+    id stream = [ HNReadWriteStream on: [ self new: 10 ] ];
 
     [ stream truncate ];
     [ ablock value: stream ];
@@ -62,8 +71,8 @@
 }
 + (id) with: (id)element1 with: (id)element2 with: (id)element3 with: (id)element4 {
     return [ [ [ [ [ [ self new: 3 ]
-                 at: 0 put: element1 ]
-                 at: 1 put: element2 ]
+                       at: 0 put: element1 ]
+                     at: 1 put: element2 ]
                  at: 2 put: element3 ]
                  at: 3 put: element4 ] yourself ];
 }
@@ -86,7 +95,7 @@
 }
 
 
-+ (id) withAll: (id <HNPCollectable>)a_collection {
++ (id) withAll: (HNCollection *)a_collection {
     id an_arrayed_collection = [ self new: [ a_collection size ] ];
     int index = 0;
 #ifdef HEZELNUT_ENABLE_BLOCK
@@ -107,7 +116,7 @@
 }
 
 
-+ (id) join: (id <HNPCollectable>)a_collection {
++ (id) join: (HNCollection *)a_collection {
 #ifdef HEZELNUT_ENABLE_BLOCK
     id new_inst = [ self new: [ a_collection inject: 0
                                                into: ^(int size, id each) { return size + [ each size ]; } ] ];
@@ -149,7 +158,7 @@
 #endif  /* def HEZELNUT_ENABLE_BLOCK */
     return new_inst;
 }
-+ (id) join: (id <HNPCollectable>)a_collection separatedBy: (id <HNPCollectable>)sep_collection {
++ (id) join: (HNCollection *)a_collection separatedBy: (HNCollection *)sep_collection {
     id new_inst;
     int start;
 #ifndef HEZELNUT_ENABLE_BLOCK
@@ -214,7 +223,7 @@
 }
 
 
-- (id) concat: (id <HNPSeqeuenceable>)a_seqeuenceable_collection {
+- (id) concat: (HNSequenceableCollection *)a_seqeuenceable_collection {
     return [ [ [ [ self copyEmpty: [ self size ] + [ a_seqeuenceable_collection size ] ]
                replaceFrom: 0
                         to: [ self size ]
@@ -359,13 +368,13 @@
 }
 
 
-- (id) with: (id <HNPSeqeuenceable>)a_seqeuenceable_collection collect: a_block {
+- (id) with: (HNSequenceableCollection *)a_seqeuenceable_collection collect: a_block {
     int i;
     int size;
     id new_collection;
 
     if ( [ self size ] != [ a_seqeuenceable_collection size ] )
-        [ InvalidSize signalOn: a_seqeuenceable_collection ];
+        [ HNInvalidSizeError signalOn: a_seqeuenceable_collection ];
 
     new_collection = [ self copyEmpty ];
     size = [ self size ];
@@ -384,9 +393,9 @@
     int end;
 
     if ( stop - start < -1 )
-        [ ArgumentOutOfRangeError signalOn: stop
-                             mustBeBetween: start - 1
-                                       and: [ self size ] ];
+        [ HNArgumentOutOfRangeError signalOn: stop
+                               mustBeBetween: start - 1
+                                         and: [ self size ] ];
     end = stop >= start? stop: start;
     new_size = end + ( [ self size ] - stop );
 
@@ -397,7 +406,7 @@
 }
 
 
-- (id) copyReplaceAll: (id <HNPCollectable>)old_sub_collection with: (id <HNPCollectable>)new_sub_collection {
+- (id) copyReplaceAll: (HNCollection *)old_sub_collection with: (HNCollection *)new_sub_collection {
     int num_old = [ self countSubCollectionOccurrencesOf: old_sub_collection ];
     int new_sub_size = [ new_sub_collection size ];
     int old_sub_size = [ old_sub_collection size ];
@@ -467,16 +476,18 @@
                       with: [ self asSortedCollection ]
                 startingAt: 0 ];
 }
-- (id) sorted: (HNComparisonBlock)a_block {
+#ifdef HEZELNUT_ENABLE_BLOCK
+- (id) sorted: (HNComparisonBlock *)a_block {
     return [ [ self copyEmpty ]
                replaceFrom: 0
                         to: [ self size ]
                       with: [ self asSortedCollection: a_block ]
                 startingAt: 0 ];
 }
+#endif  /* def HEZELNUT_ENABLE_BLOCK */
 
 
-- (id) storeOn: (id <HNPStreamable>)a_stream {
+- (id) storeOn: (HNStream *)a_stream {
     int index;
 #ifndef HEZELNUT_ENABLE_BLOCK
     id it, element;
@@ -552,7 +563,7 @@
 #endif  /* def HEZELNUT_HAVE_WRITE_STREAM */
 
 
-- (int) size {
+- (size_t) size {
     return vmpr_object_basic_size( self );
 }
 @end

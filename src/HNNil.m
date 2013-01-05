@@ -24,23 +24,35 @@
 
 
 @implementation HNNil
+
+
 static HNNil* shared_nil_object = nil;
+
+
 + (id) instance {
     if ( shared_nil_object == nil )
-        [ [ HNNil alloc ] init ];
+        shared_nil_object = [ [ HNNil alloc ] init ];
     return shared_nil_object;
 }
+
+
 + (id) alloc {
     if ( shared_nil_object == nil )
         shared_nil_object = [ super alloc ];
     return shared_nil_object;
 }
+
+
 - (id) init {
     if ( shared_nil_object == nil )
         shared_nil_object = [ [ HNNil alloc ] init ];
     return shared_nil_object;
 }
+
+
 - (BOOL) isNil { return YES; }
+
+
 - (BOOL) notNil { return NO; }
 @end
 

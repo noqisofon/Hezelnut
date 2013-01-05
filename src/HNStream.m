@@ -1,5 +1,5 @@
 //  
-//  HNStream.h
+//  HNStream.m
 //  
 //  Auther:
 //       ned rihine <ned.rihine@gmail.com>
@@ -19,7 +19,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // 
-#import <hezelnut/HNCollectable.h>
 
 #import <hezelnut/HNStream.h>
 

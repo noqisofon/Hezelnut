@@ -1,10 +1,10 @@
 //  
-//  HNBlockClosure.h
+//  HNError.h
 //  
 //  Auther:
 //       Ned Rihine <ned.rihine@gmail.com>
 // 
-//  Copyright (c) 2011 rihine All rights reserved.
+//  Copyright (c) 2011-2012 rihine All rights reserved.
 // 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -19,26 +19,32 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
-#ifndef Hezelnut_HNBlockClosure_h
-#define Hezelnut_HNBlockClosure_h
+#ifndef Hezelnut_HNError_h
+#define Hezelnut_HNError_h
 
 #import <hezelnut/HNObject.h>
 
 
-@interface HNBlockClosure : HNObject
-/*! \name private-instance creation
+@class HNString;
+
+
+@interface HNError : HNObject
+/*! \name instance creation
   
  */
-/*! @{ */
 /*!
- * 
+ *
  */
-- (id) exceptionHandlerResetBlock;
++ (id) signal;
+/*!
+ *
+ */
++ (id) signal: (HNString *)message_text;
 /*! @} */
 @end
 
 
-#endif  /* Hezelnut_HNBlockClosure_h */
+#endif  /* Hezelnut_HNError_h */
 // Local Variables:
 //   coding: utf-8
 //   mode: objc

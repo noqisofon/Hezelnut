@@ -474,11 +474,52 @@
 /*!
  * 
  */
+- (id) checkIndexableBounds: (int)index;
+/*!
+ * 
+ */
 #ifdef HEZELNUT_ENABLE_BLOCK
 //- (id) checkIndexableBounds: (int)index ifAbsent: a_block;
 #else
-- (id) checkIndexableBounds: (int)index ifAbsent: (hn_action0_functor)a_block;
+- (id) checkIndexableBounds: (int)index ifAbsent: (hn_filter0_functor)a_block;
 #endif  /* def HEZELNUT_ENABLE_BLOCK */
+
+
+/*!
+ *
+ */
+- (id) at: (int)index;
+/*!
+ *
+ */
+#ifdef HEZELNUT_ENABLE_BLOCK
+#else
+- (id) at: (int)index ifAbsent: (hn_filter0_functor)a_block;
+#endif  /* def HEZELNUT_ENABLE_BLOCK */
+
+
+/*!
+ *
+ */
+- (id) at: (int)index put: (id)item;
+
+
+/*!
+ *
+ */
+- (size_t) size;
+
+
+/*!
+ *
+ */
+- (size_t) basicSize;
+
+
+/*!
+ *
+ */
+- (BOOL) isReadOnly;
 /*! @} */
 @end
 

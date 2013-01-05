@@ -25,7 +25,7 @@
 #import <objc/objc.h>
 
 
-typedef   void (*hn_action0_functor)();
+typedef   void (*hn_action0_functor)(void);
 typedef   void (*hn_action1_functor)(id obj);
 typedef   void (*hn_action2_functor)(id obj0, id obj1);
 
@@ -37,7 +37,11 @@ typedef   id (*hn_filter1_functor)(id obj);
 typedef   id (*hn_filter2_functor)(id obj0, id obj1);
 
 
+typedef   id (*hn_enumeration1_functor)(id each);
 typedef   id (*hn_enumeration2_functor)(id each, int index);
+
+
+typedef   id (*hn_except_functor)(void);
 
 
 #endif  /* Hezelnut_hn_functor_h */

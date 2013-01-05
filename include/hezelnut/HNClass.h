@@ -22,7 +22,7 @@
 #ifndef Hezelnut_HNClass_h
 #define Hezelnut_HNClass_h
 
-#import <objc/typedstream.h>
+//#import <objc/typedstream.h>
 #import <hezelnut/HNClassDescription.h>
 
 
@@ -151,13 +151,13 @@
 /*!
  * クラス変数辞書に登録されているクラス変数の名前のセットを返します。
  */
-- (id <HNPSet>) classVarNames;
+- (HNSet *) classVarNames;
 
 
 /*!
  * サブクラスのクラス変数辞書のクラス変数の名前も含めたセットを返します。
  */
-- (id <HNPSet>) allClassVarNames;
+- (HNSet *) allClassVarNames;
 
 
 /*!
@@ -169,7 +169,7 @@
 /*!
  * クラスで定義された共有プールを返します。
  */
-- (HNSet) sharedPool;
+- (HNSet *) sharedPool;
 #endif  /* def HEZELNUT_HAVE_SET */
 
 
