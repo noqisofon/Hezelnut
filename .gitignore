@@ -44,6 +44,7 @@ config.h.in
 /config.status
 /commit_message.tmp
 /documents
+/doc
 /TAGS
 /*.anjuta
 /TODO.tasks
