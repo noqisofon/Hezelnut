@@ -1,5 +1,25 @@
-
-
+//
+//  Hezelnut
+//  HNObject.h
+//
+//  Author:
+//       ned rihine <ned.rihine@gmail.com>
+//
+//  Copyright (c) 2013 rihine All rights reserved.
+//
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU Lesser General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU Lesser General Public License for more details.
+//
+//  You should have received a copy of the GNU Lesser General Public License
+//  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//  
 #import "Hezelnut/HNVersionMacros.h"
 
 
@@ -9,13 +29,13 @@
 /*!
  * レシーバのクラスを返します。
  */
-- (CHNClass_ref) class;
+- (Class) class;
 
 
 /*!
  * レシーバのスーパークラスを返します。
  */
-- (CHNClass_ref) superclass;
+- (Class) superclass;
 
 
 /*!
@@ -31,48 +51,69 @@
 
 
 /*!
- * レシーバと anObject が等しければ真を返します。
+ * レシーバと an_object が等しければ真を返します。
  * 
- * \param anObject 比較したい別のオブジェクト。
+ * \param an_object 比較したい別のオブジェクト。
  */
-- (CHNBoolean) equals: (id)anObject;
+- (BOOL) equals: (id)an_object;
 
 
 /*!
- * レシーバと anObject が等しければ真を返します。
+ * レシーバと an_object が等しければ真を返します。
  */
-- (CHNBoolean) identityEquals: (id)anObject;
-
-
-/*!
- *
- */
-- (CHNBoolean) isKindOf: (CHNClass_ref)aClass;
+- (BOOL) identityEquals: (id)an_object;
 
 
 /*!
  *
  */
-- (CHNBoolean) isMemberOf: (CHNClass_ref)aClass;
+- (BOOL) isKindOf: (Class)a_class;
 
 
 /*!
  *
  */
-- (CHNBoolean) isNil;
+- (BOOL) isMemberOf: (Class)a_class;
 
 
 /*!
  *
  */
-- (CHNBoolean) notNil;
+- (BOOL) isNil;
 
 
 /*!
  *
  */
-- (CHNBoolean) respondsToSelector: (SEL)aSelector;
+- (BOOL) notNil;
 
+
+/*!
+ *
+ */
+- (BOOL) respondsToSelector: (SEL)aSelector;
+
+@end
+
+
+
+@protocol HNReleaseable
+/*!
+ *
+ */
+- (id) retain;
+
+
+/*!
+ *
+ */
+- (id) release;
+
+
+/*!
+ *
+ */
+- (unsigned int) retainCount;
 @end
 
 
@@ -111,14 +152,26 @@
  */
 @interface HNObject <HNObject>
 {
-    CHNClass_ref prototype_;
+    Class prototype_;
 }
 
 
 /*!
  * 
  */
-+ (CHNClass_ref) class;
++ (void) initialize;
+
+
+/*!
+ *
+ */
++ (IMP) instanceMethodForSelector: (SEL)a_selector;
+
+
+/*!
+ * 
+ */
++ (Class) class;
 
 
 /*!
@@ -143,6 +196,18 @@
  *
  */
 + (id) newWithZone: (HNZone *)aZone;
+
+
+/*!
+ *
+ */
+- (id) init;
+
+
+/*!
+ *
+ */
+- (void) dealloc;
 
 
 /*!
@@ -178,10 +243,89 @@
 /*!
  *
  */
-- (CHNUInteger) hash;
+- (HNUInteger) hash;
+
+
+/*!
+ * レシーバと an_object が等しければ真を返します。
+ * 
+ * \param an_object 比較したい別のオブジェクト。
+ */
+- (BOOL) equals: (id)an_object;
+
+
+/*!
+ * レシーバと an_object が等しければ真を返します。
+ */
+- (BOOL) identityEquals: (id)an_object;
+
+
+/*!
+ *
+ */
+- (BOOL) isKindOf: (Class)a_class;
+
+
+/*!
+ *
+ */
+- (BOOL) isMemberOf: (Class)a_class;
+
+
+/*!
+ *
+ */
+- (BOOL) isNil;
+
+
+/*!
+ *
+ */
+- (BOOL) notNil;
+
+
+/*!
+ *
+ */
+- (BOOL) respondsToSelector: (SEL)aSelector;
+
+
+/*!
+ *
+ */
+- (id) retain;
+
+
+/*!
+ *
+ */
+- (id) release;
+
+
+/*!
+ *
+ */
+- (HNUInteger) retainCount;
 
 
 @end
+
+
+/*!
+ *
+ */
+HN_API id hn_allocate_object(Class a_class, HNUInteger extra_bytes, HNZone* zone);
+
+
+/*!
+ *
+ */
+HN_API void hn_deallocate_object(id an_object);
+
+
+#if !NO_ANOTHERSTEP && !defined(ANOTHERSTEP_BASE_INTERNAL)
+#   import <AnotherStepBase/HNObject+AnotherStepBase.h>
+#endif  /* NO_ANOTHERSTEP && !defined(ANOTHERSTEP_BASE_INTERNAL) */
 
 
 // Local Variables:
