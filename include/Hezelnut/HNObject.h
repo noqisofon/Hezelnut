@@ -20,8 +20,33 @@
 //  You should have received a copy of the GNU Lesser General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //  
-#import "Hezelnut/HNVersionMacros.h"
+#ifndef Hezelnut_HNObject_h
+#define Hezelnut_HNObject_h
 
+#import <Hezelnut/HNObjCRuntime.h>
+#import <objc/objc.h>
+#import <Hezelnut/HNZone.h>
+
+#ifndef AS_WITH_GC
+#   define    AS_WITH_GC    0
+#endif  /* ndef AS_WITH_GC */
+
+
+HN_EXTERN_C_BEGIN
+
+
+@class Protocol;
+
+@class HNArchiver;
+@class HNArray;
+@class HNCoder;
+@class HNDictionary;
+@class HNPortCoder;
+@class HNMethodSignature;
+@class HNMutableString;
+@class HNRecursiveLock;
+@class HNString;
+@class HNInvocation;
 
 
 @protocol HNObject
@@ -92,6 +117,48 @@
  *
  */
 - (BOOL) respondsToSelector: (SEL)aSelector;
+
+
+/*!
+ *
+ */
+- (BOOL) conformsToProtocol: (Protocol *)a_protocol;
+
+
+/*!
+ *
+ */
+- (id) retain ;
+
+
+/*!
+ *
+ */
+- (void) release;
+
+
+/*!
+ *
+ */
+- (id) autorelease;
+
+
+/*!
+ *
+ */
+- (HNUInteger) retainCount;
+
+
+/*!
+ *
+ */
+- (HNString *) decription;
+
+
+/*!
+ *
+ */
+- (HNZone *) zone;
 
 @end
 
@@ -169,6 +236,12 @@
 
 
 /*!
+ *
+ */
++ (HNMethodSigunature *) instanceMethodSigunatureForSelector: (SEL)a_selector;
+
+
+/*!
  * 
  */
 + (Class) class;
@@ -196,6 +269,25 @@
  *
  */
 + (id) newWithZone: (HNZone *)aZone;
+
+
+/*!
+ *
+ */
++ (void) poseAsClass: (Class)a_class_object;
+
+
+/*!
+ *
+ */
++ (id) setVersion: (HNInteger)a_version;
+
+
+/*!
+ *
+ */
++ (HNInteger) version;
+
 
 
 /*!
@@ -244,70 +336,6 @@
  *
  */
 - (HNUInteger) hash;
-
-
-/*!
- * レシーバと an_object が等しければ真を返します。
- * 
- * \param an_object 比較したい別のオブジェクト。
- */
-- (BOOL) equals: (id)an_object;
-
-
-/*!
- * レシーバと an_object が等しければ真を返します。
- */
-- (BOOL) identityEquals: (id)an_object;
-
-
-/*!
- *
- */
-- (BOOL) isKindOf: (Class)a_class;
-
-
-/*!
- *
- */
-- (BOOL) isMemberOf: (Class)a_class;
-
-
-/*!
- *
- */
-- (BOOL) isNil;
-
-
-/*!
- *
- */
-- (BOOL) notNil;
-
-
-/*!
- *
- */
-- (BOOL) respondsToSelector: (SEL)aSelector;
-
-
-/*!
- *
- */
-- (id) retain;
-
-
-/*!
- *
- */
-- (id) release;
-
-
-/*!
- *
- */
-- (HNUInteger) retainCount;
-
-
 @end
 
 
@@ -320,7 +348,22 @@ HN_API id hn_allocate_object(Class a_class, HNUInteger extra_bytes, HNZone* zone
 /*!
  *
  */
+HN_API id hn_copy_object(id an_object, HNUInteger extra_bytes, HNZone* zone);
+
+
+/*!
+ *
+ */
 HN_API void hn_deallocate_object(id an_object);
+
+
+/*!
+ *
+ */
+HN_API BOOL hn_should_retain_with_zone(HNObject* an_object, HNZone* requested_zone);
+
+
+HN_EXTERN_C_END
 
 
 #if !NO_ANOTHERSTEP && !defined(ANOTHERSTEP_BASE_INTERNAL)
